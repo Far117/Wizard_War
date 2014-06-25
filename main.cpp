@@ -2,10 +2,12 @@
 
 using namespace std;
 
-struct info{
+struct Inf{
     float version=0;
     string type="pre-alpha";
 };
+
+Inf info;
 
 string inputS(string x){
 
@@ -44,12 +46,13 @@ float inputF(string x){
 
 void splash(){
     cout << "          Wizard War" << endl;
-    cout << "     " << type << " v " << version << endl;
+    cout << "        " << info.type << " v. " << info.version << endl;
     cout << "        Press enter...." << endl;
     inputS("");
 }
 
 int main()
 {
+    splash();
     return 0;
 }
