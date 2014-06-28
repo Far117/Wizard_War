@@ -1,3 +1,6 @@
 *.cbp
 bin/Debug/Wizard_War.exe
 *.o
+*.depend
+*.layout
+save.dat
