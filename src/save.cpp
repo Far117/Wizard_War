@@ -14,8 +14,8 @@ void town();
 
 
 bool exists(string name){
-    ifstream check(name.c_str());
-    return check;
+    ifstream check(name);
+    return check.good();
 }
 
 void save(Hero h){

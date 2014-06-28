@@ -138,6 +138,8 @@ void newCharacter(){
         player.sondaughter="daughter";
     }
 
+    player.element=inputS("Is your preferred element Fire, Water, Earth, or Air: ");
+
     if (player.name=="superskip"){
         town();
     }
@@ -234,7 +236,7 @@ int main()
     splash();
     clear_screen();
 
-    if(check){
+    if(exists("save.dat")){
         if(lower(inputS("Do you want to load a game or start a new one: "))=="new"){
             newCharacter();
         }else{

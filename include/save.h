@@ -5,6 +5,6 @@
 
 void save(Hero);
 Hero load(Hero);
-bool check();
+bool exists(std::string);
 
 #endif // SAVE_H
