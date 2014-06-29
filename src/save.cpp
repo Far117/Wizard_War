@@ -11,7 +11,7 @@ using namespace std;
 int inputI(string);
 void clear_screen();
 void town();
-
+void enter();
 
 bool exists(string name){
     ifstream check(name);
@@ -51,7 +51,7 @@ void save(Hero h){
 
     out.close();
     cout << "Save complete!" << endl;
-    inputI("Press enter to continue...");
+    enter();
 
     town();
 }
@@ -131,7 +131,7 @@ Hero load(Hero player){
     player.total_xp=atof(lines[18].c_str());
 
     cout << "Load complete!" << endl;
-    inputI("Press enter to continue...");
+    enter();
 
     return player;
 }
