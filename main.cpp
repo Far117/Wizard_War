@@ -76,50 +76,6 @@ void init(){
 
 float random_float(float,float);
 
-class monster{
-public:
-  float health;
-  float power;
-  float xp;
-  float defence;
-
-  string name;
-
-  vector<string> titles{"Evil","Bad","Weak","Powerful","Crazy","Rabid",
-    "Glowing","King","Slimy","Ugly","Soft","Big","Small"};
-
-  vector<string> first_half{"Cre","Fra","She","Mera","Jure","Lepa","Zeta","Hira",
-    "Giga","Frata","Mita","Chraka","Kli","Orodoro","Oro","Bonadu"};
-
-  vector<string> second_half{"man","mon","jarto","kilki","gario","ploj","qwad","grat",
-    "noto","maru","cha","mira","schep","cretaka","plop"};
-
-
-  void set_xp(){
-    xp=health/100+defence+(power/10)/(random_float(1,3));
-    if (xp<1){xp=1;}
-  }
-
-  void set_name(){
-    int r=rand()%13;
-    name=name+titles[r];
-
-    r=rand() % 16;
-    name=name+ " " + first_half[r];
-
-
-    r=rand() % 15;
-    name=name+second_half[r];
-  }
-
-  void clean(){
-    health=floorf(health*10+.5)/10;
-    power=floorf(power*10+.5)/10;
-    defence=floorf(defence*10+.5)/10;
-    xp=floorf(xp*10+.5)/10;
-  }
-};
-
 string inputS(string x){
 
     string temp;
@@ -525,6 +481,7 @@ void outside(){
     monster m;
     int choice;
     int damage;
+    bool critical=false;
 
     m.health=random_float(player.max_health*0.5,player.max_health*2);
     m.power=random_float(player.max_power*0.5,player.max_power*1);
@@ -594,17 +551,25 @@ void outside(){
             cout << "Use " << powers[j] << "? (" << j << ")" << endl;
         }
 
-        cout << "Or just punch it, really hard? (7)" << endl;
+        cout << "Just punch it, really hard? (7)" << endl;
+        cout << "Or try to escape? (8)" << endl;
 
         choice=inputI(": ");
 
-        if(choice>7||choice<0){
+        if(choice>8||choice<0){
             cout << "You tripped!" << endl;
         }else if (choice==7){
             player.total_attacks++;
             damage=player.power-m.defence;
+
+            if (rand()%10==0){//critical
+                    damage*=rand()%3+2;
+                    critical=true;
+            }
+
             if (damage<1){damage=1;}
             cout << "You punched the " << m.name << ", HARD." << endl;
+            if (critical){cout << "Critical hit!" << endl; critical=false;}
             cout << "You caused " << damage << " damage!" << endl;
 
             m.health-=damage;
@@ -613,7 +578,17 @@ void outside(){
                 enter();
                 break;
             }
-        } else {
+        } else if (choice==8) {
+            if (rand()%(10-(10/(int)(m.power+.5))+2)==0){
+                clear_screen();
+                cout << "Escape successful!" << endl;
+                player.reset_power();
+                enter();
+                town();
+            } else{
+                cout << "Couldn't escape!!!" << endl << endl;
+            }
+        } else{
             if (player.costs[choice]>player.max_power){
                 cout << "You aren't skilled enough to use that!" << endl;
             }else if (player.costs[choice]>player.power){
@@ -622,9 +597,16 @@ void outside(){
                 player.total_attacks++;
                 cout << "You used " << powers[choice] << "!" << endl;
                 damage=player.costs[choice]*11-m.defence;
+
+                if (rand()%10==0){//critical
+                    damage*=rand()%3+2;
+                    critical=true;
+                }
+
                 if (damage<1){damage=1;}
 
-                cout << "You caused " << damage << "damage!" << endl;
+                if (critical){cout << "Critical hit!" << endl; critical=false;}
+                cout << "You caused " << damage << " damage!" << endl;
 
                 m.health-=damage;
                 player.power-=player.costs[choice];
@@ -692,7 +674,7 @@ void hospital(){
 
     if (said_no){
         cout << "[Nurse]: Oh. Dang, I really wanted that cash." << endl;
-        cout << "[Nurse]: We can charge you in demonic-... I meant other ways though." << endl;
+        cout << "[Nurse]: We can charge you in demonic-... I mean other ways though." << endl;
         if (lower(inputS("Interested? \n: "))=="yes"){
             player.x*=1.1;
             player.reset_health();
