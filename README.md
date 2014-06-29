@@ -1,4 +1,4 @@
-			Wizard_War
+Wizard_War
 ==========
 Updated 6/29/14 (Alpha 0.1 Patch #1)
 ====================================
