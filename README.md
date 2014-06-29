@@ -15,12 +15,19 @@ Feel free to download/play/make suggestions/fix my bugs/etc. if you're bored eno
 Currently includes:
 
 Leveling
+
 Procedurally generated monsters (shouldn't every text game?)
+
 Stores
+
 XP (the same as money for now)
+
 Fighting
+
 Spells
+
 Air/Earth/Fire/Water wizardry
+
 Kamehamehas
 
 etc.
@@ -30,10 +37,15 @@ etc.
 Planned:
 
 Inventory (ugh)
+
 Weapons
+
 Single use items (bail potions, anyone?)
+
 Different areas, with different types of random monsters
+
 Skill-based leveling (whole character leveling as a result of ~3 skill levels)
+
 Swordsmanship
 
 etc.
