@@ -74,6 +74,8 @@ void init(){
     srand(time_ui);
 }
 
+float random_float(float,float);
+
 class monster{
 public:
   float health;
@@ -94,7 +96,7 @@ public:
 
 
   void set_xp(){
-    xp=health/100+defence+(power/10);
+    xp=health/100+defence+(power/10)/(random_float(1,3));
     if (xp<1){xp=1;}
   }
 
@@ -178,7 +180,7 @@ bool contains(string s, string check){
 
 void splash(){
     cout << "                                   Wizard War" << endl;
-    cout << "                                 " << info.type << " " << info.version << endl;
+    cout << "                                " << info.type << " " << info.version << " Patch #" << info.patch << endl;
     cout << "                                 Press enter...." << endl;
     inputS("");
 }
@@ -246,9 +248,13 @@ void starting_story(){
     scroll();
     cout << "Almost all life was extinct, save for the rabid monsters summoned to help the dark wizard..." ;
     scroll();
-    cout << "This time, the wizard lost. Telling " << player.name << " that his last wishes, he perished...";
+    cout << "This time, the wizard lost. Telling " << player.name << " his last wishes, he perished...";
     scroll();
     cout << "[Wizard]: " << player.name << ", you must gain power. Save humanity... Avenge me! And remember...";
+    scroll();
+    cout << "[Wizard]: Just..." << endl;
+    scroll();
+    cout << "[Wizard]: Just..." << endl;
     scroll();
     cout << "[Wizard]: Just..." << endl;
     scroll();
@@ -520,9 +526,9 @@ void outside(){
     int choice;
     int damage;
 
-    m.health=random_float(player.health*0.2,player.health*0.7);
-    m.power=random_float(player.power*0.2,player.power*0.7);
-    m.defence=random_float(player.defence*0.2,player.defence*1.8);
+    m.health=random_float(player.max_health*0.5,player.max_health*2);
+    m.power=random_float(player.max_power*0.5,player.max_power*1);
+    m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
     m.set_name();
 
@@ -651,7 +657,10 @@ void outside(){
         cout << "You earned " << m.xp << " XP!" << endl;
         player.xp+=m.xp;
         cout << "You found one " << m.name << " body! The sheriff might want it..." << endl;
+
         player.caught++;
+        player.killed++;
+        player.total_xp+=m.xp;
 
         if (player.check_xp()){
             cout << "You have enough XP to level up!" << endl;

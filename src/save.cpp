@@ -132,6 +132,7 @@ Hero load(Hero player){
 
     cout << "Load complete!" << endl;
     enter();
+    player.clean();
 
     return player;
 }

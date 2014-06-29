@@ -4,3 +4,4 @@ bin/Debug/Wizard_War.exe
 *.depend
 *.layout
 save.dat
+bin/Release/Wizard_War.exe

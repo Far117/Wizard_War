@@ -8,6 +8,7 @@
 struct Inf{
     float version=0.1;
     std::string type="Alpha";
+    int patch=1;
 };
 
 class Hero{ //main player
@@ -34,7 +35,7 @@ public:
     int killed;
     int total_attacks;
     int deaths;
-    int total_xp;
+    float total_xp;
 
     std::vector<std::string> fire{"Smoke","Embers","Fireball","Fire Boulder","Firestorm","Fire Wave","Kamehameha"};
     std::vector<std::string> water{"Rain","Hail","Torrent","Wave","Ice Dagger","Ice Wave","Absolute Zero"};
@@ -51,6 +52,7 @@ public:
         defence=floorf(defence*10+.5)/10;
         xp=floorf(xp*10+.5)/10;
         deposit=floorf(deposit*10+.5)/10;
+        x=floorf(x*10+.5)/10;
     }
 
     void reset_health(){
