@@ -1,6 +1,6 @@
 Wizard_War
 ==========
-Updated 6/30/14 (Alpha 0.2 Patch #2)
+Updated 6/30/14 (Alpha 0.2 Patch #3)
 ====================================
 
 A text-based RPG to perfect random elements for WW2, the full graphical version.

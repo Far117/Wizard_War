@@ -11,7 +11,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.2;
     std::string type="Alpha";
-    int patch=2;
+    int patch=3;
 };
 
 class Hero{ //main player
@@ -48,6 +48,9 @@ public:
     float earth_xp;
     int air_level;
     float air_xp;
+
+    int unarmed_level;
+    float unarmed_xp;
 
     std::vector<std::string> fire{"Smoke","Embers","Fireball","Fire Boulder","Firestorm","Fire Wave","Kamehameha", "Spirit Bomb"};
     std::vector<std::string> water{"Rain","Hail","Torrent","Wave","Ice Dagger","Ice Wave","Absolute Zero","Nuclear Winter"};

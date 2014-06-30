@@ -349,7 +349,7 @@ void apothecary(){
         player.reset_power();
     } else if (choice==8&&player.xp>=15){
         player.xp-=15;
-        player.defence*=1.2;
+        player.power*=1.2;
         player.clean();
     }else if (choice==9){
         player.check();
@@ -490,7 +490,21 @@ void outside(){
     m.power=random_float(player.max_power*0.5,player.max_power*1);
     m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
-    m.set_name();
+    if(rand()%50==0){
+        m.name=player.name;
+        m.power=player.power;
+        m.health=player.health;
+        m.defence=player.defence;
+
+        cout << "You spotted the Dark Wizard up ahead!" << endl;
+        enter();
+        cout << "The Dark Wizard used Mirror Bluff!" << endl;
+        enter();
+        cout << "What has he done?!?" << endl;
+        enter();
+    }else{
+        m.set_name();
+    }
 
     if (contains("Giga",m.name)){
         m.power*=1.8;
@@ -668,6 +682,7 @@ void outside(){
 
 void hospital(){
     clear_screen();
+    player.deaths++;
     bool said_no=false;
 
     cout << "[Nurse]: Oh my. You seem to have died. Don't worry! We brought you back with SCIENCE!" << endl;
@@ -692,6 +707,9 @@ void hospital(){
         if (lower(inputS("Interested? \n: "))=="yes"){
             player.x*=1.1;
             player.reset_health();
+        } else {
+            player.health=player.max_health/2;
+            player.clean();
         }
     }
     enter();
