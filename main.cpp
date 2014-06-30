@@ -461,6 +461,8 @@ void sheriff(){
 
     if (choice==1&&player.caught>0){
         float amount=player.caught*3+player.caught+(player.level*1.5);
+        player.xp+=amount;
+
         cout << "[Ray]: Here yer go!" << endl;
         cout << "Received " << amount << " XP from Ray" << endl;
         player.clean();
