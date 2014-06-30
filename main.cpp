@@ -551,23 +551,24 @@ void outside(){
             cout << "Use " << powers[j] << "? (" << j << ")" << endl;
         }
 
-        cout << "Just punch it, really hard? (7)" << endl;
-        cout << "Or try to escape? (8)" << endl;
+        cout << "Just punch it, really hard? ("<< powers.size() <<")" << endl;
+        cout << "Or try to escape? ("<<powers.size()+1 << ")" << endl;
 
         choice=inputI(": ");
 
-        if(choice>8||choice<0){
+        if(choice>powers.size()+1||choice<0){
             cout << "You tripped!" << endl;
-        }else if (choice==7){
+        }else if (choice==powers.size()){
             player.total_attacks++;
             damage=player.power-m.defence;
+
+            if (damage<1){damage=1;}
 
             if (rand()%10==0){//critical
                     damage*=rand()%3+2;
                     critical=true;
             }
 
-            if (damage<1){damage=1;}
             cout << "You punched the " << m.name << ", HARD." << endl;
             if (critical){cout << "Critical hit!" << endl; critical=false;}
             cout << "You caused " << damage << " damage!" << endl;
@@ -578,7 +579,7 @@ void outside(){
                 enter();
                 break;
             }
-        } else if (choice==8) {
+        } else if (choice==powers.size()+1) {
             if (rand()%(10-(10/(int)(m.power+.5))+2)==0){
                 clear_screen();
                 cout << "Escape successful!" << endl;
@@ -598,12 +599,14 @@ void outside(){
                 cout << "You used " << powers[choice] << "!" << endl;
                 damage=player.costs[choice]*11-m.defence;
 
+                if (damage<1){damage=1;}
+
                 if (rand()%10==0){//critical
                     damage*=rand()%3+2;
                     critical=true;
                 }
 
-                if (damage<1){damage=1;}
+
 
                 if (critical){cout << "Critical hit!" << endl; critical=false;}
                 cout << "You caused " << damage << " damage!" << endl;

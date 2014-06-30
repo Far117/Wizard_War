@@ -11,7 +11,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.2;
     std::string type="Alpha";
-    int patch=0;
+    int patch=1;
 };
 
 class Hero{ //main player
@@ -49,12 +49,12 @@ public:
     int air_level;
     float air_xp;
 
-    std::vector<std::string> fire{"Smoke","Embers","Fireball","Fire Boulder","Firestorm","Fire Wave","Kamehameha"};
-    std::vector<std::string> water{"Rain","Hail","Torrent","Wave","Ice Dagger","Ice Wave","Absolute Zero"};
-    std::vector<std::string> earth{"Dirt","Rock Throw","Pebble Storm","Boulder Smash","Earthquake","Volcano","Meteor Smash"};
-    std::vector<std::string> air{"Breeze","Super Blow","Torrential Wind","Hurricane","Tornado","Suffocate","Vacuum"};
+    std::vector<std::string> fire{"Smoke","Embers","Fireball","Fire Boulder","Firestorm","Fire Wave","Kamehameha", "Spirit Bomb"};
+    std::vector<std::string> water{"Rain","Hail","Torrent","Wave","Ice Dagger","Ice Wave","Absolute Zero","Nuclear Winter"};
+    std::vector<std::string> earth{"Dirt","Rock Throw","Pebble Storm","Boulder Smash","Earthquake","Volcano","Meteor Smash","Meteor Storm"};
+    std::vector<std::string> air{"Breeze","Super Blow","Torrential Wind","Hurricane","Tornado","Suffocate","Vacuum","Implosion"};
 
-    std::vector<int> costs{1,3,4,6,10,12,15};
+    std::vector<int> costs{1,2,4,8,16,32,64,128,256,512,1024,2048};
 
     void clean(){ //rounds to one decimal
         max_health=floorf(max_health*10+.5)/10;
