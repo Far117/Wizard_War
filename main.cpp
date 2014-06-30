@@ -344,13 +344,11 @@ void apothecary(){
         player.max_health+=50;
     }else if (choice==7&&player.xp>=15){
         player.xp-=15;
-        player.max_power*=1.2;
-
-        player.reset_power();
+        player.defence*=1.2;
     } else if (choice==8&&player.xp>=15){
         player.xp-=15;
-        player.power*=1.2;
-        player.clean();
+        player.max_power*=1.2;
+        player.reset_power();
     }else if (choice==9){
         player.check();
         town();
@@ -358,7 +356,9 @@ void apothecary(){
         cout << "[Lyla] You don't have that kind of cash!";
     }
 
+
     player.check();
+    player.clean();
     enter();
     apothecary();
 }
