@@ -11,7 +11,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.2;
     std::string type="Alpha";
-    int patch=1;
+    int patch=2;
 };
 
 class Hero{ //main player

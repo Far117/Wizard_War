@@ -482,6 +482,7 @@ void outside(){
     int choice;
     int damage;
     bool critical=false;
+    bool auto_fight=false;
 
     m.health=random_float(player.max_health*0.5,player.max_health*2);
     m.power=random_float(player.max_power*0.5,player.max_power*1);
@@ -553,8 +554,15 @@ void outside(){
 
         cout << "Just punch it, really hard? ("<< powers.size() <<")" << endl;
         cout << "Or try to escape? ("<<powers.size()+1 << ")" << endl;
+        cout << endl << "Hint: Enter 9001 to enter auto punch mode..." << endl;
 
-        choice=inputI(": ");
+        if (!auto_fight){
+            choice=inputI(": ");
+            if (choice==9001){auto_fight=1;}
+        }else{
+            choice=powers.size();
+        }
+
 
         if(choice>powers.size()+1||choice<0){
             cout << "You tripped!" << endl;
@@ -619,14 +627,15 @@ void outside(){
 
         }
 
-        enter();
+        if (!auto_fight){enter();}
+
         damage=m.power-player.defence;
         if (damage<1){damage=1;}
         m.power/=1.1;
 
         cout << endl;
         cout << "The " << m.name << " attacked you for " << damage << " damage!" << endl;
-        enter();
+        if (!auto_fight){enter();}
 
         player.health-=damage;
     }
