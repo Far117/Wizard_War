@@ -1,137 +1,21 @@
 #include <iostream>
 
 #include <cstdlib>
-#include <time.h>
 #include <vector>
 
 #include "save.h"
 #include "constants.h"
+#include "functions.h"
 
 using namespace std;
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    const bool isWindows=true;
-#else
-    const bool isWindows=false;
-#endif // defined
 
-void clear_screen()
-{
-    if(isWindows){
-        system("cls");
-    }else{
-        system("clear");
-    }
 
-    return;
-}
-
-void pause(unsigned int ms){
-    clock_t goal = ms + clock();
-    while (goal > clock());
-}
-
-void scroll(){
-    for(int x=0;x<=3;x++){
-        cout << endl;
-        pause(1000);
-    }
-}
-
-void enter(){
-    cout << "Press enter to continue...";
-    //cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-    cin.ignore();
-}
 
 Inf info;
 Hero player;
 
-void init(){
-    player.name="";
-    player.age=0;
-    player.element="";
-    player.boygirl="";
-    player.himher="";
-    player.hishers="";
-    player.sondaughter="";
-    player.power=10;
-    player.max_power=10;
-    player.max_health=100;
-    player.health=100;
-    player.pop=12;
-    player.xp=0;
-    player.x=2.5;
-    player.level=1;
-    player.deposit=0;
-    player.caught=0;
-    player.killed=0;
-    player.total_attacks=0;
-    player.deaths=0;
-    player.defence=2;
 
-    unsigned int time_ui = static_cast<unsigned int>( time(NULL) );
-    srand(time_ui);
-}
-
-float random_float(float,float);
-
-string inputS(string x){
-
-    string temp;
-
-    cout << x;
-    getline(cin,temp);
-    //cout << endl;
-
-    return temp;
-}
-
-int inputI(string x){
-    int temp;
-
-    cout << x;
-    cin >> temp;
-    cout << endl;
-
-    cin.clear();
-    cin.ignore();
-    //getline(cin, temp);
-    return temp;
-}
-
-float inputF(string x){
-    float temp;
-
-    cout << x;
-    cin >> temp;
-    cout << endl;
-
-    cin.ignore();
-
-    return temp;
-}
-
-string lower(string s){ //converts string to lowercase
-    for(int j=0;j<s.length();++j){
-        s[j]=tolower(s[j]);
-    }
-    return s;
-}
-
-float random_float(float a, float b) {
-    float random = ((float) rand()) / (float) RAND_MAX;
-    float diff = b - a;
-    float r = random * diff;
-    return a + r;
-}
-
-bool contains(string s, string check){
-    if (s.find(check) != string::npos) {
-        return true;
-    }
-    return false;
-}
 
 
 void splash(){
@@ -307,6 +191,7 @@ void stats(){
 
 void apothecary(){
     clear_screen();
+    bool bought=true;
 
     cout << "You have " << player.xp << "XP, " << player.health << "/" << player.max_health << " health," << endl;
     cout << player.max_power << " power, and " << player.defence << " defence." << endl;
@@ -354,8 +239,10 @@ void apothecary(){
         town();
     }else{
         cout << "[Lyla] You don't have that kind of cash!";
+        bought=false;
     }
 
+    if(bought){cout << "Thanks for your purchase!" << endl;}
 
     player.check();
     player.clean();
@@ -504,42 +391,7 @@ void outside(){
         enter();
     }else{
         m.set_name();
-    }
-
-    if (contains("Giga",m.name)){
-        m.power*=1.8;
-        m.health*=1.9;
-        m.defence*=1.5;
-    }
-
-    if (contains("King", m.name)){
-        m.power*=1.9;
-        m.health*=2;
-        m.defence*=1.8;
-    }
-
-    if (contains("Weak", m.name)){
-        m.power/=1.5;
-        m.health/=1.4;
-        m.defence/=1.5;
-    }
-
-    if (contains("Rabid", m.name)){
-        m.power*=2;
-        m.health/=2.5;
-        m.defence=0;
-    }
-
-    if (contains("Crazy", m.name)){
-        m.power*=2;
-        m.health/=2;
-        m.defence=0;
-    }
-
-    if (contains("plop",m.name)){
-        m.power/=1.5;
-        m.health/=1.5;
-        m.defence/=1.5;
+        m.set_status();
     }
 
     m.set_xp();
@@ -723,7 +575,7 @@ void hospital(){
 
 int main()
 {
-    init();
+    player=init(player);
     splash();
     clear_screen();
 

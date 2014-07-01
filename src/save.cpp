@@ -1,5 +1,6 @@
 #include "save.h"
 #include "constants.h"
+#include "functions.h"
 
 #include <fstream>
 #include <vector>
