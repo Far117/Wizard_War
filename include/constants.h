@@ -11,9 +11,9 @@
 float random_float(float,float);
 
 struct Inf{
-    float version=0.2;
-    std::string type="Alpha";
-    int patch=3;
+    float version=0.4;
+    std::string type="Final Alpha";
+    int patch=0;
 };
 
 class Hero{ //main player
@@ -44,15 +44,27 @@ public:
 
     int fire_level;
     float fire_xp;
+    float fire_need;
+
     int water_level;
     float water_xp;
+    float water_need;
+
     int earth_level;
     float earth_xp;
+    float earth_need;
+
     int air_level;
     float air_xp;
+    float air_need;
 
     int unarmed_level;
     float unarmed_xp;
+    float unarmed_need;
+
+    int sword_level;
+    float sword_xp;
+    float sword_need;
 
     int levels;
     float money;

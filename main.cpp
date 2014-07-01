@@ -9,14 +9,8 @@
 
 using namespace std;
 
-
-
-
 Inf info;
 Hero player;
-
-
-
 
 void splash(){
     cout << "                                   Wizard War" << endl;
@@ -374,13 +368,13 @@ void outside(){
     bool auto_fight=false;
 
     m.health=random_float(player.max_health*0.5,player.max_health*2);
-    m.power=random_float(player.max_power*0.5,player.max_power*1);
+    m.power=random_float(player.max_power*0.7,player.max_power*1.5);
     m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
     if(rand()%50==0){
         m.name=player.name;
-        m.power=player.power;
-        m.health=player.health;
+        m.power=player.max_power;
+        m.health=player.max_health;
         m.defence=player.defence;
 
         cout << "You spotted the Dark Wizard up ahead!" << endl;
@@ -389,7 +383,60 @@ void outside(){
         enter();
         cout << "What has he done?!?" << endl;
         enter();
-    }else{
+    }else if (rand()%10==0 && player.level>=5){
+        m.name="Dark Wizard";
+        m.power=player.power*1.5;
+        m.health=player.health*3;
+        m.defence=player.defence*1.5;
+
+        cout << "[???]: Thought you could hide from me?" << endl;
+        enter();
+        cout << "[Dark Wizard]: NO ONE HIDES FROM THE DARK WIZARD!" << endl;
+        enter();
+        cout << "[Dark Wizard]: NOW DIE! AND ALL HOPE WITH YOU!" << endl;
+        enter();
+        cout << "The Dark Wizard used Hypernova!!!" << endl;
+        enter();
+        cout << "It caused " << player.max_health-1 << " damage!\nYou have 1 hp left!!!" << endl;
+        enter();
+        cout << "The Dark Wizard used Soul Void!\nYou're power level is now 1!" << endl;
+        enter();
+
+        player.health=1;
+        player.power=0;
+
+        if(rand()%10==0){
+            cout << "[???]: NO!" << endl;
+            enter();
+            cout << "[???]: It will not end this way... listen to me, " <<player.sondaughter <<"..." << endl;
+            enter();
+            cout << "[Father]: Be strong! You CAN defeat him!!!" << endl;
+            enter();
+            cout << "The Great Wizard used Giga Heal! You're back to full health!" << endl;
+            enter();
+            cout << "[Father]: Now fight! Fight and save us all..." << endl;
+            enter();
+            cout << "[Dark Wizard]: Yes... fight! Let's see who is truly all-powerful..." << endl;
+            enter();
+            player.reset_health();
+            player.reset_power();
+        }else{
+            cout << "[Dark Wizard]: NOW DIE FOOL!" << endl;
+            enter();
+            cout << "The Dark Wizard used Galactic Implosion" << endl;
+            enter();
+            cout << "It caused " << 1000000+player.max_health*10007 << " damage!!!" << endl;
+            enter();
+            cout << "You have been wiped from the face of the universe..." << endl;
+            enter();
+            cout << "However..." << endl;
+            enter();
+
+            player.reset_power();
+            player.health=0;
+            hospital();
+        }
+    } else {
         m.set_name();
         m.set_status();
     }
@@ -473,7 +520,7 @@ void outside(){
             }else {
                 player.total_attacks++;
                 cout << "You used " << powers[choice] << "!" << endl;
-                damage=player.costs[choice]*11-m.defence;
+                damage=player.costs[choice]+player.power-m.defence;
 
                 if (damage<1){damage=1;}
 
@@ -571,6 +618,12 @@ void hospital(){
     cout << "[Nurse]: We hope to see you again. Very soon. Hehehehe..." << endl;
     enter();
     town();
+}
+
+void school(){
+    clear_screen();
+
+    cout << "[Headmaster]: Hello pupil, we have many fine spells available. Take your pick!" << endl;
 }
 
 int main()
