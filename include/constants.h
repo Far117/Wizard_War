@@ -13,7 +13,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.4;
     std::string type="Final Alpha";
-    int patch=0;
+    int patch=1;
 };
 
 class Hero{ //main player
@@ -116,6 +116,7 @@ public:
             max_health*=1.5;
             max_power*=1.5;
             defence*=1.5;
+            pop*=1.5;
 
             clean();
             reset_power();
@@ -217,6 +218,12 @@ public:
     }
 
     }
+};
+
+struct learned{
+    bool push;
+    bool torch;
+    bool fireball;
 };
 
 #endif // CONSTANTS_H_INCLUDED

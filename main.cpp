@@ -6,6 +6,7 @@
 #include "save.h"
 #include "constants.h"
 #include "functions.h"
+#include "spells.h"
 
 using namespace std;
 
@@ -371,7 +372,7 @@ void outside(){
     m.power=random_float(player.max_power*0.7,player.max_power*1.5);
     m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
-    if(rand()%50==0){
+    if(rand()%6==0){
         m.name=player.name;
         m.power=player.max_power;
         m.health=player.max_health;
@@ -383,7 +384,7 @@ void outside(){
         enter();
         cout << "What has he done?!?" << endl;
         enter();
-    }else if (rand()%10==0 && player.level>=5){
+    }else if (rand()%15==0 && player.level>=5){
         m.name="Dark Wizard";
         m.power=player.power*1.5;
         m.health=player.health*3;
@@ -405,10 +406,11 @@ void outside(){
         player.health=1;
         player.power=0;
 
-        if(rand()%10==0){
+        if(rand()%2==0){
+            clear_screen();
             cout << "[???]: NO!" << endl;
             enter();
-            cout << "[???]: It will not end this way... listen to me, " <<player.sondaughter <<"..." << endl;
+            cout << "[???]: It will not end this way... listen to me, my " <<player.sondaughter <<"..." << endl;
             enter();
             cout << "[Father]: Be strong! You CAN defeat him!!!" << endl;
             enter();
@@ -425,7 +427,7 @@ void outside(){
             enter();
             cout << "The Dark Wizard used Galactic Implosion" << endl;
             enter();
-            cout << "It caused " << 1000000+player.max_health*10007 << " damage!!!" << endl;
+            cout << "It caused " << player.max_health*10007 << " damage!!!" << endl;
             enter();
             cout << "You have been wiped from the face of the universe..." << endl;
             enter();
@@ -451,6 +453,7 @@ void outside(){
     if (lower(player.element)=="earth"){powers=player.earth;}
     if (lower(player.element)=="air"){powers=player.air;}
 
+    clear_screen();
     cout << "A " << m.name << " jumps out at you!" << endl;
     enter();
 
@@ -629,6 +632,7 @@ void school(){
 int main()
 {
     player=init(player);
+    //cout << fireball.cost << endl;
     splash();
     clear_screen();
 
