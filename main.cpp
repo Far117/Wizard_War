@@ -964,6 +964,8 @@ int main()
 
     make("data");
 
+    install();
+
     if(exists("data/save.dat")){
         if(lower(inputS("Do you want to load a game or start a new one: "))=="new"){
             newCharacter();

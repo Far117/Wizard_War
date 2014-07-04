@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 
+
 #include "functions.h"
 #include "spells.h"
 

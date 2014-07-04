@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <time.h>
+#include <fstream>
 
 using namespace std;
 
@@ -157,4 +158,13 @@ Hero init(Hero p){
     srand(time_ui);
 
     return p;
+}
+
+void install(){
+    if(!exists("data/installed")){
+        ofstream out("data/moneypatch");
+        out.close();
+        out.open("data/xppatch");
+        out.close();
+    }
 }

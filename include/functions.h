@@ -17,4 +17,6 @@ bool contains(std::string,std::string);
 std::string lower(std::string);
 Hero init(Hero);
 
+void install();
+
 #endif // FUNCTIONS_H
