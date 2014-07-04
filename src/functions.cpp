@@ -99,6 +99,7 @@ bool contains(string s, string check){
 }
 
 Hero init(Hero p){
+
     p.name="";
     p.age=0;
     p.element="";
@@ -121,6 +122,36 @@ Hero init(Hero p){
     p.deaths=0;
     p.defence=2;
     p.money=1;
+
+    p.levels=0;
+
+    p.fire_level=1;
+    p.fire_xp=0;
+    p.fire_need=5;
+
+    p.water_level=1;
+    p.water_xp=0;
+    p.water_need=5;
+
+    p.earth_level=1;
+    p.earth_xp=0;
+    p.earth_need=5;
+
+    p.air_level=1;
+    p.air_xp=0;
+    p.air_need=5;
+
+    p.unarmed_level=1;
+    p.unarmed_xp=0;
+    p.unarmed_need=5;
+
+    p.force_level=1;
+    p.force_xp=0;
+    p.force_need=5;
+
+    p.sword_level=1;
+    p.sword_xp=0;
+    p.sword_need=5;
 
     unsigned int time_ui = static_cast<unsigned int>( time(NULL) );
     srand(time_ui);

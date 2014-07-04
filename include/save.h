@@ -8,8 +8,11 @@ void save_updater();
 void save(Hero);
 Hero load(Hero);
 
-void save_spells();
-void load_spells();
+void save_spells(Hero);
+Hero load_spells(Hero);
+
+void save_story();
+void load_story();
 
 bool exists(std::string);
 void make(std::string);

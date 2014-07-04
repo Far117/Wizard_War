@@ -7,8 +7,13 @@
 #include "constants.h"
 #include "functions.h"
 #include "spells.h"
+#include "Story.h"
 
-extern Spell fireball;
+/*
+Working on making physical attacks use 0 power;
+Continue updateing fight system
+XP and leveling
+*/
 
 using namespace std;
 
@@ -24,7 +29,10 @@ void splash(){
 
 //========================================================= Forward Declarations =================
 
-extern vector<Spell> spell_list;
+//extern vector<Spell> spell_list;
+//extern Spell fireball;
+extern Spell punch;
+extern Completed story;
 
 void town();
 void starting_story();
@@ -36,6 +44,7 @@ void sheriff();
 void outside();
 void hospital();
 void school();
+void gym();
 
 //================================================================= End ==========================
 
@@ -56,7 +65,7 @@ void newCharacter(){
         player.sondaughter="daughter";
     }
 
-    player.element=inputS("Is your preferred element Fire, Water, Earth, or Air: ");
+    player.element=inputS("Is your preferred power Fire, Water, Earth, Air, Force, Unarmed, or Sword Combat: ");
 
     if (player.name=="superskip"){
         town();
@@ -120,7 +129,14 @@ void town(){
     cout << "Visit the Police Offices? (4)" << endl;
     cout << "Go outside? (5)" << endl;
     cout << "Save? (6)" << endl;
-    cout << "Or Visit the Wizard School? (7)" << endl;
+    cout << "Visit the Wizard School? (7)" << endl;
+    cout << "Or visit the Gym (8)?";
+    if (story.first_power==false){
+        cout << " Hint: You need to buy your first move, punch, here!!!" << endl;
+        story.first_power=true;
+    }else{
+        cout << endl;
+    }
 
     choice=inputI("["+player.name+"]: ");
 
@@ -140,6 +156,8 @@ void town(){
         player=load(player);
     }else if(choice==7){
         school();
+    }else if(choice==8){
+        gym();
     }
 
     town();
@@ -147,15 +165,16 @@ void town(){
 
 void stats(){
     clear_screen();
-    float need=player.x*2.5-player.xp;
-    if(need<0){need=0;}
+    //float need=player.x*2.5-player.xp;
+    //if(need<0){need=0;}
 
     cout << "==========Stats========" << endl;
     cout << "Name: " << player.name << endl;
     cout << "Age: " << player.age << endl;
-    cout << "Element: " << player.element << endl;
-    cout << "XP: " << player.xp << endl;
-    cout << "XP Needed to Level Up: " << need << endl;
+    cout << "Boost: " << player.element << endl;
+    //cout << "XP: " << player.xp << endl;
+    //cout << "XP Needed to Level Up: " << need << endl;
+    cout << "Money: " << player.money << " Vi" << endl;
     cout << "Level: " << player.level << endl;
     cout << "Health: " << player.health << "/" << player.max_health << endl;
     cout << "Power: " << player.power << "/" << player.max_power << endl;
@@ -164,8 +183,9 @@ void stats(){
     cout << "Total Attacks Made: " << player.total_attacks << endl;
     cout << "Deaths: " << player.deaths << endl;
     cout << "Enemies Killed: " << player.killed << endl;
-    cout << "Total XP Earned: " << player.total_xp << endl;
+    cout << "Total Money Earned: " << player.total_money << endl;
 
+    /*
     if (need==0){
         if (lower(inputS("You have enough XP to level up! Would you like to? "))=="yes"){
             player.xp-=(player.x*2.5);
@@ -187,8 +207,19 @@ void stats(){
         }
     }
 
-    enter();
+    */
 
+    enter();
+    clear_screen();
+    cout << "======Stats Page 2=====" << endl;
+    cout << "Fire Skill: " << player.fire_level << endl;
+    cout << "Water Skill: " << player.water_level << endl;
+    cout << "Earth Skill: " << player.earth_level << endl;
+    cout << "Air Level: " << player.air_level << endl;
+    cout << "Force Level: " << player.force_level << endl;
+    cout << "Unarmed Level: " << player.unarmed_level << endl << endl;
+
+    enter();
     town();
 }
 
@@ -196,45 +227,45 @@ void apothecary(){
     clear_screen();
     bool bought=true;
 
-    cout << "You have " << player.xp << "XP, " << player.health << "/" << player.max_health << " health," << endl;
+    cout << "You have " << player.money << " Vi, " << player.health << "/" << player.max_health << " health," << endl;
     cout << player.max_power << " power, and " << player.defence << " defence." << endl;
     cout << endl;
     cout << "[Lyla]: I have lots of high quality potions for sale. Would you like:" << endl;
-    cout << "Small health potion: Heals 20 hp for 1 xp? (1)" << endl;
-    cout << "Medium health potion: Heals 75 hp for 3 xp? (2)" << endl;
-    cout << "Large health potion? Heals 150 hp for 10 xp? (3)" << endl;
-    cout << "Small upper health potion? Increases max health by 5 for 10 xp? (4)" << endl;
-    cout << "Medium upper health potion? Increases max health by 20 for 15 xp? (5)" << endl;
-    cout << "Large upper health potion? Increases max health by 50 for 30 xp? (6)" << endl;
-    cout << "Defence potion? Increases defence by 20% for 15 xp? (7)" << endl;
-    cout << "Or maybe a power potion? Increases your power by 20% for 15 xp? (8)" << endl;
+    cout << "Small health potion: Heals 20 hp for 1 Vi? (1)" << endl;
+    cout << "Medium health potion: Heals 75 hp for 3 Vi? (2)" << endl;
+    cout << "Large health potion? Heals 150 hp for 10 Vi? (3)" << endl;
+    cout << "Small upper health potion? Increases max health by 5 for 10 Vi? (4)" << endl;
+    cout << "Medium upper health potion? Increases max health by 20 for 15 Vi? (5)" << endl;
+    cout << "Large upper health potion? Increases max health by 50 for 30 Vi? (6)" << endl;
+    cout << "Defence potion? Increases defence by 20% for 15 Vi? (7)" << endl;
+    cout << "Or maybe a power potion? Increases your power by 20% for 15 Vi? (8)" << endl;
     cout << "Or do you just want to get out of here? (9)" << endl;
 
     int choice=inputI("["+player.name+"]: ");
 
-    if (choice==1&&player.xp>=1){
-        player.xp-=1;
+    if (choice==1&&player.money>=1){
+        player.money-=1;
         player.health+=20;
-    }else if (choice==2&&player.xp>=3){
-        player.xp-=3;
+    }else if (choice==2&&player.money>=3){
+        player.money-=3;
         player.health+=75;
-    }else if (choice==3&&player.xp>=10){
-        player.xp-=10;
+    }else if (choice==3&&player.money>=10){
+        player.money-=10;
         player.health+=150;
-    }else if (choice==4&&player.xp>=10){
-        player.xp-=10;
+    }else if (choice==4&&player.money>=10){
+        player.money-=10;
         player.max_health+=5;
-    }else if (choice==5&&player.xp>=15){
-        player.xp-=15;
+    }else if (choice==5&&player.money>=15){
+        player.money-=15;
         player.max_health+=20;
-    }else if (choice==6&&player.xp>=30){
-        player.xp-=30;
+    }else if (choice==6&&player.money>=30){
+        player.money-=30;
         player.max_health+=50;
-    }else if (choice==7&&player.xp>=15){
-        player.xp-=15;
+    }else if (choice==7&&player.money>=15){
+        player.money-=15;
         player.defence*=1.2;
-    } else if (choice==8&&player.xp>=15){
-        player.xp-=15;
+    } else if (choice==8&&player.money>=15){
+        player.money-=15;
         player.max_power*=1.2;
         player.reset_power();
     }else if (choice==9){
@@ -264,17 +295,17 @@ void hall(){
     if (choice==1){
         bank();
     }else if(choice==2){
-        if (lower(inputS("Would you like to spend XP to build new homes? "))=="yes"){
-                cout << "You have " << player.xp << " XP" << endl;
+        if (lower(inputS("Would you like to spend Vi to build new homes? "))=="yes"){
+                cout << "You have " << player.money << " Vi" << endl;
                 int percent=inputI("How much would you like to spend? ");
-                if (percent<=player.xp){
-                    player.xp-=percent;
+                if (percent<=player.money){
+                    player.money-=percent;
                     player.pop*=(1+percent/100);
                     cout << "Population increased by " << percent << "%!";
                     enter();
                     hall();
                 }else {
-                    cout << "You don't have that much XP!";
+                    cout << "You don't have that much Vi!";
                     enter();
                     hall();
                 }
@@ -292,7 +323,7 @@ void hall(){
 
 void bank(){
     clear_screen();
-    cout << "You have " << player.xp << " XP in your pocket, and " << player.deposit << " XP in the bank." << endl;
+    cout << "You have " << player.money << " Vi in your pocket, and " << player.deposit << " Vi in the bank." << endl;
     cout << endl;
     cout << "[Banker]: Hello, sir. Would you like to make a deposit or withdrawl? Or would you like to leave?" << endl;
 
@@ -304,12 +335,12 @@ void bank(){
         cout << "[Banker] How much would you like to deposit?" << endl;
         float amount=inputF(": ");
 
-        if (amount>player.xp){
+        if (amount>player.money){
             cout << "You don't have that kind of cash!!!" << endl;
             enter();
             bank();
         }else{
-            player.xp-=amount;
+            player.money-=amount;
             player.deposit+=amount;
             player.clean();
 
@@ -325,7 +356,7 @@ void bank(){
             enter();
             bank();
         }else{
-            player.xp+=amount;
+            player.money+=amount;
             player.deposit-=amount;
             player.clean();
 
@@ -350,11 +381,11 @@ void sheriff(){
     int choice=inputI("["+player.name+"]: ");
 
     if (choice==1&&player.caught>0){
-        float amount=player.caught*3+player.caught+(player.level*1.5);
-        player.xp+=amount;
+        float amount=player.caught*2;
+        player.money+=amount;
 
         cout << "[Ray]: Here yer go!" << endl;
-        cout << "Received " << amount << " XP from Ray" << endl;
+        cout << "Received " << amount << " Vi from Ray" << endl;
         player.clean();
 
         enter();
@@ -371,10 +402,15 @@ void sheriff(){
 void outside(){
     clear_screen();
     monster m;
-    int choice;
+    //int choice;
+    string choice;
     int damage;
     bool critical=false;
     bool auto_fight=false;
+    //bool trip=true;
+
+    int selected;
+    bool found=false;
 
     m.health=random_float(player.max_health*0.5,player.max_health*2);
     m.power=random_float(player.max_power*0.7,player.max_power*1.5);
@@ -451,15 +487,17 @@ void outside(){
         m.set_status();
     }
 
-    m.set_xp();
-    m.xp+=random_float(m.xp-(m.xp*2/5),m.xp*2/5);
+    m.set_money();
+    m.money+=random_float(m.money-(m.money*2/5),m.money*2/5);
     m.clean();
 
+    /*
     vector<string> powers;
     if (lower(player.element)=="fire"){powers=player.fire;}
     if (lower(player.element)=="water"){powers=player.water;}
     if (lower(player.element)=="earth"){powers=player.earth;}
     if (lower(player.element)=="air"){powers=player.air;}
+    */
 
     clear_screen();
     cout << "A " << m.name << " jumps out at you!" << endl;
@@ -474,22 +512,93 @@ void outside(){
         cout << "The " << m.name << " has " << m.health << " health" << endl << endl;
         cout << "How do you want to attack?" << endl;
 
+        /*
         for(int j=0;j<powers.size();j++){
             cout << "Use " << powers[j] << "? (" << j << ")" << endl;
         }
+        */
 
-        cout << "Just punch it, really hard? ("<< powers.size() <<")" << endl;
-        cout << "Or try to escape? ("<<powers.size()+1 << ")" << endl;
-        cout << endl << "Hint: Enter 9001 to enter auto punch mode..." << endl;
+        for(int j=0;j<player.spell_list.size();j++){
+            if(player.spell_list[j].unlocked){
+                cout << "Use " << player.spell_list[j].name << "?" << endl;
+            }
+        }
 
+        cout << "Or try to escape?"<< endl;
+
+        //cout << endl << "Hint: Enter 9001 to enter auto punch mode..." << endl;
+
+
+        /*
         if (!auto_fight){
             choice=inputI(": ");
             if (choice==9001){auto_fight=1;}
         }else{
             choice=powers.size();
         }
+        */
+        choice=inputS(": ");
+
+        for(int j=0;j<player.spell_list.size();j++){
+            if (lower(choice)==lower(player.spell_list[j].name) && player.spell_list[j].unlocked){
+                found=true;
+                selected=j;
+            }
+        }
+
+        if(lower(choice)=="escape"){
+            if (rand()%(10-(10/(int)(m.power+.5))+2)==0){
+                clear_screen();
+                cout << "Escape successful!" << endl;
+                player.reset_power();
+                enter();
+                town();
+            }else{
+                cout << "You were followed!" << endl;
+                found=false;
+                enter();
+            }
+        }else if(found){
+
+            if(player.spell_list[selected].power_requirement>player.max_power){
+                cout << "You aren't skilled enough to use that!" << endl;
+                found=false;
+                enter();
+            }else if (player.spell_list[selected].power_requirement>player.power){
+                cout << "You're too tired to use that!" << endl;
+                found=false;
+                enter();
+            }else{
+                found=false;
+                cout << "You used " << player.spell_list[selected].name << "!" << endl;
+
+                damage=player.spell_list[selected].power_requirement+player.power+player.get_multiplier(player.spell_list[selected].type);
+                player.power-=player.spell_list[selected].power_requirement;
+
+                if(rand()%10==0){
+                    damage*=rand()%3+2;
+                    cout << "Critical hit!" << endl;
+                }
+
+                cout << "You caused " << damage << " damage!" << endl;
+                enter();
+                //cout << endl;
+
+                player.gain(player.spell_list[selected].type);
+
+                m.health-=damage;
+                if (m.health<=0){
+                    break;
+                }
+            }
+
+        }else if (!found){
+            cout << "You tripped!" << endl;
+        }
 
 
+
+        /*
         if(choice>powers.size()+1||choice<0){
             cout << "You tripped!" << endl;
         }else if (choice==powers.size()){
@@ -554,7 +663,7 @@ void outside(){
         }
 
         if (!auto_fight){enter();}
-
+        */
         damage=m.power-player.defence;
         if (damage<1){damage=1;}
         m.power/=1.1;
@@ -574,17 +683,20 @@ void outside(){
     }else{
         clear_screen();
         cout << "You beat the " << m.name << "!" << endl;
-        cout << "You earned " << m.xp << " XP!" << endl;
-        player.xp+=m.xp;
-        cout << "You found one " << m.name << " body! The sheriff might want it..." << endl;
+        cout << "You found " << m.money << " Vi on it!" << endl;
+        player.money+=m.money;
+        cout << "You found one " << m.name << " body! The sheriff might buy it..." << endl;
 
         player.caught++;
         player.killed++;
-        player.total_xp+=m.xp;
+        //player.total_xp+=m.xp;
+        player.total_money+=m.money;
 
+        /*
         if (player.check_xp()){
             cout << "You have enough XP to level up!" << endl;
         }
+        */
         enter();
         town();
     }
@@ -598,10 +710,10 @@ void hospital(){
     cout << "[Nurse]: Oh my. You seem to have died. Don't worry! We brought you back with SCIENCE!" << endl;
     cout << "[Nurse]: ... And a lot of tylenol..." << endl;
     cout << "[Nurse]: Anyway, to heal you 100% will cost 2 XP. " << endl;
-    if (player.xp>=2){
+    if (player.money>=2){
         cout << "[Nurse]: Would you like to pay for that? " << endl;
         if (lower(inputS(": "))=="yes"){
-            player.xp-=2;
+            player.money-=2;
             player.reset_health();
             cout << "[Nurse]: Thank you!" << endl;
         } else {
@@ -654,12 +766,13 @@ void school(){
 
     clear_screen();
 
-    for(int j=0;j<spell_list.size();j++){
-        if(spell_list[j].type==choice && !spell_list[j].unlocked){
-            cout << spell_list[j].name << ":\n" << spell_list[j].description << "\n\n";
-            cout << "Power Per Use: " << spell_list[j].power_requirement << endl;
-            cout << "Damage With 100 Power: "<<spell_list[j].power_requirement+100*1.2 << endl;
-            cout << "Price: " << spell_list[j].cost << " Vi\n\n";
+    for(int j=0;j<player.spell_list.size();j++){
+        if(player.spell_list[j].type==choice && !player.spell_list[j].unlocked && player.spell_list[j].power_requirement
+           <=player.max_power){
+            cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            cout << "Power Per Use: " << player.spell_list[j].power_requirement << endl;
+            cout << "Damage With 100 Power at Level 10: "<<player.spell_list[j].power_requirement+100*1.9 << endl;
+            cout << "Price: " << player.spell_list[j].cost << " Vi\n\n";
             cout << "===========================================================================\n\n";
         }
     }
@@ -671,20 +784,20 @@ void school(){
 
     if (lower(s)=="none"){school();}
 
-    for(int j=0;j<spell_list.size();j++){
-        if(lower(spell_list[j].name)==lower(s)){
+    for(int j=0;j<player.spell_list.size();j++){
+        if(lower(player.spell_list[j].name)==lower(s)){
             clear_screen();
-            cout << "Are you sure you would like " << spell_list[j].name << "?";
+            cout << "Are you sure you would like " << player.spell_list[j].name << "?";
             s=inputS(": ");
-            if(lower(s)=="yes" && player.money >= spell_list[j].cost){
-                spell_list[j].unlocked=true;
-                player.money-=spell_list[j].cost;
+            if(lower(s)=="yes" && player.money >= player.spell_list[j].cost){
+                player.spell_list[j].unlocked=true;
+                player.money-=player.spell_list[j].cost;
 
                 clear_screen();
-                cout << "You've learned " << spell_list[j].name << "!";
+                cout << "You've learned " << player.spell_list[j].name << "!" << endl;
                 enter();
                 school();
-            } else if(lower(s)=="yes" && player.money < spell_list[j].cost){
+            } else if(lower(s)=="yes" && player.money < player.spell_list[j].cost){
                 clear_screen();
                 cout << "[Headmaster]: What are you doing??? You don't have enough money!!!" << endl;
                 enter();
@@ -699,11 +812,81 @@ void school(){
         school();
 }
 
+void gym(){
+    clear_screen();
+
+    cout << "[Trainer]: 'Sup. Here to learn some new moves?" << endl;
+    cout << "[Trainer]: Interested in staying like a man (1) or leaving like a baby (2)?" << endl;
+    cout << "" << endl;
+    int choice;
+    choice=inputI(": ");
+
+    if(choice==2){
+        cout << "[Trainer]: HA! Wimp..." << endl;
+        enter();
+        town();
+    }
+
+    if(choice>2||choice<1){
+        cout << "[Trainer]: What the heck?" << endl;
+        enter();
+        gym();
+    }
+
+    clear_screen();
+
+    for(int j=0;j<player.spell_list.size();j++){
+        if(player.spell_list[j].type==100 && !player.spell_list[j].unlocked && player.spell_list[j].power_requirement
+           <=player.max_power){
+            cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            cout << "Power Per Use: " << player.spell_list[j].power_requirement << endl;
+            cout << "Damage With 100 Power at level 10: "<<player.spell_list[j].power_requirement+100*1.9 << endl;
+            cout << "Price: " << player.spell_list[j].cost << " Vi\n\n";
+            cout << "===========================================================================\n\n";
+        }
+    }
+
+    cout << "\n\n[Trainer]: Just tell me which you want bro (none for none)"<< endl;
+
+    string s;
+    s=inputS(": ");
+
+    if (lower(s)=="none"){gym();}
+
+    for(int j=0;j<player.spell_list.size();j++){
+        if(lower(player.spell_list[j].name)==lower(s)){
+            clear_screen();
+            cout << "[Trainer]: You really want to learn " << player.spell_list[j].name << "?" << endl;
+            s=inputS(": ");
+            if(lower(s)=="yes" && player.money >= player.spell_list[j].cost){
+                player.spell_list[j].unlocked=true;
+                player.money-=player.spell_list[j].cost;
+
+                clear_screen();
+                cout << "You've learned " << player.spell_list[j].name << "!" << endl;
+                enter();
+                gym();
+            } else if(lower(s)=="yes" && player.money < player.spell_list[j].cost){
+                clear_screen();
+                cout << "[Trainer]: What's wrong wit you??? I don't train poor hobos like you! Get outta here!" << endl;
+                enter();
+                town();
+            }else{
+                gym();
+            }
+        }
+    }
+        cout << "[Trainer]: What the..." << endl;
+        enter();
+        gym();
+}
+
 int main()
 {
     player=init(player);
-    init_spells();
-
+    player=init_spells(player);
+    init_story();
+    //cout << player.earth_need;
     splash();
     clear_screen();
 
