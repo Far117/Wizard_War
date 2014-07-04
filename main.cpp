@@ -8,6 +8,8 @@
 #include "functions.h"
 #include "spells.h"
 
+extern Spell fireball;
+
 using namespace std;
 
 Inf info;
@@ -22,6 +24,8 @@ void splash(){
 
 //========================================================= Forward Declarations =================
 
+extern vector<Spell> spell_list;
+
 void town();
 void starting_story();
 void stats();
@@ -31,6 +35,7 @@ void bank();
 void sheriff();
 void outside();
 void hospital();
+void school();
 
 //================================================================= End ==========================
 
@@ -114,7 +119,8 @@ void town(){
     cout << "Visit Town Hall? (3)" << endl;
     cout << "Visit the Police Offices? (4)" << endl;
     cout << "Go outside? (5)" << endl;
-    cout << "Or save? (6)" << endl;
+    cout << "Save? (6)" << endl;
+    cout << "Or Visit the Wizard School? (7)" << endl;
 
     choice=inputI("["+player.name+"]: ");
 
@@ -132,6 +138,8 @@ void town(){
         save(player);
     }else if(choice==117){
         player=load(player);
+    }else if(choice==7){
+        school();
     }
 
     town();
@@ -627,16 +635,81 @@ void school(){
     clear_screen();
 
     cout << "[Headmaster]: Hello pupil, we have many fine spells available. Take your pick!" << endl;
+    cout << "[Headmaster]: Would you like to see:" << endl;
+    cout << "Fire Spells (1)\nWater Spells (2)\nEarth Spells (3)\nAir Spells (4)\nForce Spells (5)\nOr just leave (6)?" << endl;
+    int choice;
+    choice=inputI(": ");
+
+    if(choice==6){
+        cout << "[Headmaster]: Goodbye!" << endl;
+        enter();
+        town();
+    }
+
+    if(choice>5||choice<1){
+        cout << "What is that?" << endl;
+        enter();
+        school();
+    }
+
+    clear_screen();
+
+    for(int j=0;j<spell_list.size();j++){
+        if(spell_list[j].type==choice && !spell_list[j].unlocked){
+            cout << spell_list[j].name << ":\n" << spell_list[j].description << "\n\n";
+            cout << "Power Per Use: " << spell_list[j].power_requirement << endl;
+            cout << "Damage With 100 Power: "<<spell_list[j].power_requirement+100*1.2 << endl;
+            cout << "Price: " << spell_list[j].cost << " Vi\n\n";
+            cout << "===========================================================================\n\n";
+        }
+    }
+
+    cout << "\n\n[Headmaster]: Please enter the name of what you would like to buy (none for none)"<< endl;
+
+    string s;
+    s=inputS(": ");
+
+    if (lower(s)=="none"){school();}
+
+    for(int j=0;j<spell_list.size();j++){
+        if(lower(spell_list[j].name)==lower(s)){
+            clear_screen();
+            cout << "Are you sure you would like " << spell_list[j].name << "?";
+            s=inputS(": ");
+            if(lower(s)=="yes" && player.money >= spell_list[j].cost){
+                spell_list[j].unlocked=true;
+                player.money-=spell_list[j].cost;
+
+                clear_screen();
+                cout << "You've learned " << spell_list[j].name << "!";
+                enter();
+                school();
+            } else if(lower(s)=="yes" && player.money < spell_list[j].cost){
+                clear_screen();
+                cout << "[Headmaster]: What are you doing??? You don't have enough money!!!" << endl;
+                enter();
+                town();
+            }else{
+                school();
+            }
+        }
+    }
+        cout << "[Headmaster]: I have no idea what you just said..." << endl;
+        enter();
+        school();
 }
 
 int main()
 {
     player=init(player);
-    //cout << fireball.cost << endl;
+    init_spells();
+
     splash();
     clear_screen();
 
-    if(exists("save.dat")){
+    make("data");
+
+    if(exists("data/save.dat")){
         if(lower(inputS("Do you want to load a game or start a new one: "))=="new"){
             newCharacter();
         }else{

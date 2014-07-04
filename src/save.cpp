@@ -1,11 +1,13 @@
 #include "save.h"
 #include "constants.h"
 #include "functions.h"
+#include "spells.h"
 
 #include <fstream>
 #include <vector>
 #include <sstream>
 #include <cstdlib>
+#include <direct.h>
 
 using namespace std;
 
@@ -13,6 +15,12 @@ int inputI(string);
 void clear_screen();
 void town();
 void enter();
+
+extern vector<Spell> spell_list;
+
+void make(string name){
+    _mkdir(name.c_str());
+}
 
 bool exists(string name){
     ifstream check(name);
@@ -23,7 +31,8 @@ void save(Hero h){
     clear_screen();
 
     cout << "Saving..." << endl;
-    ofstream out("save.dat");
+    make("data");
+    ofstream out("data/save.dat");
 
     if(!out){
         cerr <<"Error!" << endl;
@@ -48,9 +57,20 @@ void save(Hero h){
     out << h.killed << "\n";
     out << h.total_attacks << "\n";
     out << h.deaths << "\n";
-    out << h.total_xp;
+    out << h.total_xp << "\n";
+
+    out << h.money;
 
     out.close();
+    save_spells();
+
+
+    if(!exists("data/moneypatch")){
+        ofstream out("data/moneypatch");
+        out.close();
+    }
+
+
     cout << "Save complete!" << endl;
     enter();
 
@@ -59,9 +79,10 @@ void save(Hero h){
 
 Hero load(Hero player){
     clear_screen();
+    save_updater();
 
     cout << "Loading..." << endl;
-    ifstream in("save.dat");
+    ifstream in("data/save.dat");
 
     if(!in){
         cerr <<"Error!" << endl;
@@ -131,9 +152,51 @@ Hero load(Hero player){
 
     player.total_xp=atof(lines[18].c_str());
 
+    load_spells();
+
     cout << "Load complete!" << endl;
     enter();
     player.clean();
 
     return player;
+}
+
+void save_spells(){
+    ofstream out("data/spells.dat");
+
+    for(int x=0;x<spell_list.size();x++){
+        out << spell_list[x].unlocked << "\n";
+    }
+
+    out.close();
+}
+
+void load_spells(){
+    if (!exists("data/spells,dat")){save_spells();}
+    ifstream in("data/spells.dat");
+
+    int x=0;
+    string y="";
+
+    while(!in.eof()){
+        in >> y;
+        spell_list[x].unlocked=atoi(y.c_str());
+        x++;
+    }
+}
+
+void save_updater(){
+
+    if(!exists("data/moneypatch")){
+        cout << "\nApplying Money Patch (0.5 update)..." << endl;
+
+        ofstream out("data/save.dat",ios::app);
+        out << "\n" << 1;
+        out.close();
+
+        ofstream o ("data/moneypatch");
+        o.close();
+
+        cout << "Success!\n" << endl;
+    }
 }

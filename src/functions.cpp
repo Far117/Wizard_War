@@ -120,6 +120,7 @@ Hero init(Hero p){
     p.total_attacks=0;
     p.deaths=0;
     p.defence=2;
+    p.money=1;
 
     unsigned int time_ui = static_cast<unsigned int>( time(NULL) );
     srand(time_ui);
