@@ -14,7 +14,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.5;
     std::string type="Beta";
-    int patch=0;
+    int patch=1;
 };
 
 
@@ -257,19 +257,47 @@ public:
 
     void gain(int type){ //1=fire, 2=water, 3=earth, 4=air, 5=force, 100=physical, 101=blade
         if (type==1){
-            fire_xp+=1+random_float(0,2);
+            if(lower(element)=="fire"){
+                fire_xp+=1+random_float(0,2)*1.2;
+            }else{
+                fire_xp+=1+random_float(0,2);
+            }
         }else if(type==2){
-            water_xp+=1+random_float(0,2);
+            if(lower(element)=="water"){
+                water_xp+=1+random_float(0,2)*1.2;
+            }else{
+                water_xp+=1+random_float(0,2);
+            }
         }else if(type==3){
-            earth_xp+=1+random_float(0,2);
+            if(lower(element)=="earth"){
+                earth_xp+=1+random_float(0,2)*1.2;
+            }else{
+                earth_xp+=1+random_float(0,2);
+            }
         }else if(type==4){
-            air_xp+=1+random_float(0,2);
+            if(lower(element)=="air"){
+                air_xp+=1+random_float(0,2)*1.2;
+            }else{
+                air_xp+=1+random_float(0,2);
+            }
         }else if(type==5){
-            force_xp+=1+random_float(0,2);
+            if(lower(element)=="force"){
+                force_xp+=1+random_float(0,2);
+            }else{
+                force_xp+=1+random_float(0,2);
+            }
         }else if(type==100){
-            unarmed_xp+=1+random_float(0,2);
+            if(lower(element)=="unarmed"){
+                unarmed_xp+=1+random_float(0,2)*1.2;
+            }else{
+                unarmed_xp+=1+random_float(0,2);
+            }
         }else if(type==101){
-            sword_xp+=1+random_float(0,2);
+            if(lower(element)=="sword" || lower(element)=="sword combat" || lower(element)=="swords"){
+                sword_xp+=1+random_float(0,2)*1.2;
+            }else{
+                sword_xp+=1+random_float(0,2);
+            }
         }
 
         check_powers();

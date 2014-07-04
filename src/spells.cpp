@@ -53,6 +53,13 @@ Spell dropkick;
 Spell falconpunch;
 Spell dragonfist;
 Spell chucknorris;
+//================ Sword
+Spell woodsword;
+Spell dagger;
+Spell sword;
+Spell longsword;
+Spell lightsaber;
+Spell soulsword;
 //================ End
 
 //std::vector<Spell> spell_list;
@@ -347,6 +354,51 @@ Hero init_spells(Hero p){
     p.spell_list.push_back(falconpunch);
     p.spell_list.push_back(dragonfist);
     p.spell_list.push_back(chucknorris);
+
+    //======================================== Sword
+
+    woodsword.name="Wooden Sword";
+    woodsword.description="Well... you might be able to get an eye...";
+    woodsword.power_requirement=0.1;
+    woodsword.type=101;
+    woodsword.cost=5;
+
+    dagger.name="Daggers";
+    dagger.description="Dual wielded daggers! Tear 'em up!";
+    dagger.power_requirement=10;
+    dagger.type=101;
+    dagger.cost=75;
+
+    sword.name="Sword";
+    sword.description="A standard sword. Aim for the heart!";
+    sword.power_requirement=50;
+    sword.type=101;
+    sword.cost=300;
+
+    longsword.name="Longsword";
+    longsword.description="Longer reach. More weight. Double damage!";
+    longsword.power_requirement=100;
+    longsword.type=101;
+    longsword.cost=750;
+
+    lightsaber.name="Lighsaber";
+    lightsaber.description="A blade of plasma. Insane level armor needed to even survive!";
+    lightsaber.power_requirement=1000;
+    lightsaber.type=101;
+    lightsaber.cost=10000;
+
+    soulsword.name="Soul Sword";
+    soulsword.description="Just one touch will suck their very souls from their bodies...";
+    soulsword.power_requirement=5000;
+    soulsword.type=101;
+    soulsword.cost=60000;
+
+    p.spell_list.push_back(woodsword);
+    p.spell_list.push_back(dagger);
+    p.spell_list.push_back(sword);
+    p.spell_list.push_back(longsword);
+    p.spell_list.push_back(lightsaber);
+    p.spell_list.push_back(soulsword);
 
     for(int x=0;x<p.spell_list.size();x++){
         p.spell_list[x].unlocked=false;

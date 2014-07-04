@@ -1,6 +1,6 @@
 Wizard War!
 ==========
-Updated 7/2/14 (Alpha 0.4 Patch #1)
+Updated 7/4/14 (Beta 0.5 Patch #1)
 ===================================
 
 A text-based RPG to perfect random elements for WW2, the full graphical version.
@@ -32,6 +32,12 @@ Air/Earth/Fire/Water wizardry
 
 Kamehamehas
 
+Skill-based leveling (whole character leveling as a result of ~3 skill levels)
+
+Swordsmanship
+
+Weapons
+
 etc.
 
 ===================================================================================
@@ -40,15 +46,9 @@ Planned:
 
 Inventory (ugh)
 
-Weapons
-
 Single use items (bail potions, anyone?)
 
 Different areas, with different types of random monsters
-
-Skill-based leveling (whole character leveling as a result of ~3 skill levels)
-
-Swordsmanship
 
 etc.
 
