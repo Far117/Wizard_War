@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "spells.h"
 #include "Story.h"
+#include "token.h"
 
 /*
 Working on making physical attacks use 0 power;
@@ -41,7 +42,7 @@ void apothecary();
 void hall();
 void bank();
 void sheriff();
-void outside();
+void outside(bool);
 void hospital();
 void school();
 void gym();
@@ -138,7 +139,9 @@ void town(){
     }else{
         cout << endl;
     }
-    cout << "Or See the Swords Master (9)?" << endl;
+    cout << "See the Swords Master (9)" << endl;
+    cout << "Create a Battle Token (10)" << endl;
+    cout << "Or Fight One (11)?" << endl;
 
     choice=inputI("["+player.name+"]: ");
 
@@ -151,7 +154,7 @@ void town(){
     } else if(choice==4){
         sheriff();
     } else if (choice==5){
-        outside();
+        outside(false);
     }else if(choice==6){
         save(player);
     }else if(choice==117){
@@ -162,6 +165,10 @@ void town(){
         gym();
     }else if(choice==9){
         master();
+    }else if(choice==10){
+        save_token(player);
+    }else if(choice==11){
+        outside(true);
     }
 
     town();
@@ -222,6 +229,31 @@ void stats(){
     cout << "Air Level: " << player.air_level << endl;
     cout << "Force Level: " << player.force_level << endl;
     cout << "Unarmed Level: " << player.unarmed_level << endl << endl;
+
+    enter();
+
+    clear_screen();
+    cout << "======Stats Page 3=====" << endl;
+    cout << "Fire XP: " << player.fire_xp << endl;
+    cout << "Fire XP Needed: " << player.fire_need-player.fire_xp << endl << endl;
+
+    cout << "Water XP: " << player.water_xp << endl;
+    cout << "Water XP Needed: " << player.water_need-player.water_xp << endl << endl;
+
+    cout << "Earth XP: " << player.earth_xp << endl;
+    cout << "Earth XP Needed: " << player.earth_need-player.earth_xp << endl << endl;
+
+    cout << "Air XP: " << player.air_xp << endl;
+    cout << "Air XP Needed: " << player.air_need-player.air_xp << endl << endl;
+
+    cout << "Force XP: " << player.force_xp << endl;
+    cout << "Force XP Needed: " << player.force_need-player.force_xp << endl << endl;
+
+    cout << "Swordsmanship XP: " << player.sword_xp << endl;
+    cout << "Swordsmanship XP needed: " << player.sword_need-player.sword_xp << endl << endl;
+
+    cout << "Unarmed XP: " << player.unarmed_xp << endl;
+    cout << "Unarmed XP Needed: " << player.unarmed_need-player.unarmed_xp << endl << endl;
 
     enter();
     town();
@@ -403,7 +435,7 @@ void sheriff(){
     }
 }
 
-void outside(){
+void outside(bool tokenfight){
     clear_screen();
     monster m;
     //int choice;
@@ -416,82 +448,88 @@ void outside(){
     int selected;
     bool found=false;
 
-    m.health=random_float(player.max_health*0.5,player.max_health*2);
-    m.power=random_float(player.max_power*0.7,player.max_power*1.5);
-    m.defence=random_float(player.defence*0.5,player.defence*1.8);
+    if(tokenfight){
+        m=load_token();
+    }else{
+        m.health=random_float(player.max_health*0.5,player.max_health*2);
+        m.power=random_float(player.max_power*0.7,player.max_power*1.5);
+        m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
-    if(rand()%6==0){
-        m.name=player.name;
-        m.power=player.max_power;
-        m.health=player.max_health;
-        m.defence=player.defence;
 
-        cout << "You spotted the Dark Wizard up ahead!" << endl;
-        enter();
-        cout << "The Dark Wizard used Mirror Bluff!" << endl;
-        enter();
-        cout << "What has he done?!?" << endl;
-        enter();
-    }else if (rand()%15==0 && player.level>=5){
-        m.name="Dark Wizard";
-        m.power=player.power*1.5;
-        m.health=player.health*3;
-        m.defence=player.defence*1.5;
+        if(rand()%6==0){
+            m.name=player.name;
+            m.power=player.max_power;
+            m.health=player.max_health;
+            m.defence=player.defence;
 
-        cout << "[???]: Thought you could hide from me?" << endl;
-        enter();
-        cout << "[Dark Wizard]: NO ONE HIDES FROM THE DARK WIZARD!" << endl;
-        enter();
-        cout << "[Dark Wizard]: NOW DIE! AND ALL HOPE WITH YOU!" << endl;
-        enter();
-        cout << "The Dark Wizard used Hypernova!!!" << endl;
-        enter();
-        cout << "It caused " << player.max_health-1 << " damage!\nYou have 1 hp left!!!" << endl;
-        enter();
-        cout << "The Dark Wizard used Soul Void!\nYou're power level is now 1!" << endl;
-        enter();
+            cout << "You spotted the Dark Wizard up ahead!" << endl;
+            enter();
+            cout << "The Dark Wizard used Mirror Bluff!" << endl;
+            enter();
+            cout << "What has he done?!?" << endl;
+            enter();
+        }else if (rand()%15==0 && player.level>=5){
+            m.name="Dark Wizard";
+            m.power=player.power*1.5;
+            m.health=player.health*3;
+            m.defence=player.defence*1.5;
 
-        player.health=1;
-        player.power=0;
-
-        if(rand()%2==0){
-            clear_screen();
-            cout << "[???]: NO!" << endl;
+            cout << "[???]: Thought you could hide from me?" << endl;
             enter();
-            cout << "[???]: It will not end this way... listen to me, my " <<player.sondaughter <<"..." << endl;
+            cout << "[Dark Wizard]: NO ONE HIDES FROM THE DARK WIZARD!" << endl;
             enter();
-            cout << "[Father]: Be strong! You CAN defeat him!!!" << endl;
+            cout << "[Dark Wizard]: NOW DIE! AND ALL HOPE WITH YOU!" << endl;
             enter();
-            cout << "The Great Wizard used Giga Heal! You're back to full health!" << endl;
+            cout << "The Dark Wizard used Hypernova!!!" << endl;
             enter();
-            cout << "[Father]: Now fight! Fight and save us all..." << endl;
+            cout << "It caused " << player.max_health-1 << " damage!\nYou have 1 hp left!!!" << endl;
             enter();
-            cout << "[Dark Wizard]: Yes... fight! Let's see who is truly all-powerful..." << endl;
-            enter();
-            player.reset_health();
-            player.reset_power();
-        }else{
-            cout << "[Dark Wizard]: NOW DIE FOOL!" << endl;
-            enter();
-            cout << "The Dark Wizard used Galactic Implosion" << endl;
-            enter();
-            cout << "It caused " << player.max_health*10007 << " damage!!!" << endl;
-            enter();
-            cout << "You have been wiped from the face of the universe..." << endl;
-            enter();
-            cout << "However..." << endl;
+            cout << "The Dark Wizard used Soul Void!\nYou're power level is now 1!" << endl;
             enter();
 
-            player.reset_power();
-            player.health=0;
-            hospital();
+            player.health=1;
+            player.power=0;
+
+            if(rand()%2==0){
+                clear_screen();
+                cout << "[???]: NO!" << endl;
+                enter();
+                cout << "[???]: It will not end this way... listen to me, my " <<player.sondaughter <<"..." << endl;
+                enter();
+                cout << "[Father]: Be strong! You CAN defeat him!!!" << endl;
+                enter();
+                cout << "The Great Wizard used Giga Heal! You're back to full health!" << endl;
+                enter();
+                cout << "[Father]: Now fight! Fight and save us all..." << endl;
+                enter();
+                cout << "[Dark Wizard]: Yes... fight! Let's see who is truly all-powerful..." << endl;
+                enter();
+                player.reset_health();
+                player.reset_power();
+            }else{
+                cout << "[Dark Wizard]: NOW DIE FOOL!" << endl;
+                enter();
+                cout << "The Dark Wizard used Galactic Implosion" << endl;
+                enter();
+                cout << "It caused " << player.max_health*10007 << " damage!!!" << endl;
+                enter();
+                cout << "You have been wiped from the face of the universe..." << endl;
+                enter();
+                cout << "However..." << endl;
+                enter();
+
+                player.reset_power();
+                player.health=0;
+                hospital();
+            }
+        } else {
+            m.set_name();
+            m.set_status();
         }
-    } else {
-        m.set_name();
-        m.set_status();
+
+        m.set_money();
     }
 
-    m.set_money();
     m.money+=random_float(m.money-(m.money*2/5),m.money*2/5);
     m.clean();
 
@@ -504,7 +542,11 @@ void outside(){
     */
 
     clear_screen();
-    cout << "A " << m.name << " jumps out at you!" << endl;
+    if(!tokenfight){
+        cout << "A " << m.name << " jumps out at you!" << endl;
+    }else{
+        cout << "You have challenged " << m.name << "!" << endl;
+    }
     enter();
 
     while(m.health>0 && player.health>0){
@@ -513,7 +555,11 @@ void outside(){
         cout << "You have " << player.health << "/" << player.max_health << " health" << endl;
         cout << "You have " << player.power << "/" << player.max_power << " power" << endl;
         cout << endl;
-        cout << "The " << m.name << " has " << m.health << " health" << endl << endl;
+        if(!tokenfight){
+            cout << "The " << m.name << " has " << m.health << " health" << endl << endl;
+        }else{
+            cout << m.name << " has " << m.health << " health" << endl << endl;
+        }
         cout << "How do you want to attack?" << endl;
 
         /*
@@ -576,7 +622,7 @@ void outside(){
                 found=false;
                 cout << "You used " << player.spell_list[selected].name << "!" << endl;
 
-                damage=player.spell_list[selected].power_requirement+player.power+player.get_multiplier(player.spell_list[selected].type);
+                damage=player.spell_list[selected].power_requirement+player.power+player.get_multiplier(player.spell_list[selected].type)-m.defence;
                 damage=floorf(damage*10+.5)/10;
                 if (damage<1){damage=1;}
                 player.power-=player.spell_list[selected].power_requirement;
@@ -588,9 +634,11 @@ void outside(){
 
                 cout << "You caused " << damage << " damage!" << endl;
                 enter();
+                cout << endl;
                 //cout << endl;
 
                 player.gain(player.spell_list[selected].type);
+                player.total_attacks++;
 
                 m.health-=damage;
                 if (m.health<=0){
@@ -676,7 +724,11 @@ void outside(){
         m.power/=1.1;
 
         cout << endl;
-        cout << "The " << m.name << " attacked you for " << damage << " damage!" << endl;
+        if(!tokenfight){
+            cout << "The " << m.name << " attacked you for " << damage << " damage!" << endl;
+        }else{
+            cout << m.name << " attacked you for " << damage << " damage!" << endl;
+        }
         if (!auto_fight){enter();}
 
         player.health-=damage;
@@ -689,10 +741,18 @@ void outside(){
         hospital();
     }else{
         clear_screen();
-        cout << "You beat the " << m.name << "!" << endl;
+        if(!tokenfight){
+            cout << "You beat the " << m.name << "!" << endl;
+        }else{
+            cout << "You beat " << m.name << "!" << endl;
+        }
         cout << "You found " << m.money << " Vi on it!" << endl;
         player.money+=m.money;
-        cout << "You found one " << m.name << " body! The sheriff might buy it..." << endl;
+        if(!tokenfight){
+            cout << "You found one " << m.name << " body! The sheriff might buy it..." << endl;
+        }else{
+            cout << "You found " << m.name << "'s body! The sheriff might buy it..." << endl;
+        }
 
         player.caught++;
         player.killed++;
@@ -716,11 +776,11 @@ void hospital(){
 
     cout << "[Nurse]: Oh my. You seem to have died. Don't worry! We brought you back with SCIENCE!" << endl;
     cout << "[Nurse]: ... And a lot of tylenol..." << endl;
-    cout << "[Nurse]: Anyway, to heal you 100% will cost 2 XP. " << endl;
-    if (player.money>=2){
+    cout << "[Nurse]: Anyway, to heal you 100% will cost " << player.money/10+2 << endl;
+    if (player.money>=player.money/10+2){
         cout << "[Nurse]: Would you like to pay for that? " << endl;
         if (lower(inputS(": "))=="yes"){
-            player.money-=2;
+            player.money-=player.money/10+2;
             player.reset_health();
             cout << "[Nurse]: Thank you!" << endl;
         } else {

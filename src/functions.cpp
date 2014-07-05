@@ -164,9 +164,15 @@ Hero init(Hero p){
 
 void install(){
     if(!exists("data/installed")){
+        cout << "Installing..." << endl;
         ofstream out("data/moneypatch");
         out.close();
         out.open("data/xppatch");
         out.close();
+
+        out.open("data/installed");
+        out.close();
+
+        cout << "Done!" << endl;
     }
 }

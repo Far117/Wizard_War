@@ -13,7 +13,7 @@
 float random_float(float,float);
 
 struct Inf{
-    float version=0.5;
+    float version=0.6;
     std::string type="Beta";
     int patch=1;
 };
@@ -124,8 +124,8 @@ public:
         sword_xp=floorf(sword_xp*10+.5)/10;
         sword_need=floorf(sword_need*10+.5)/10;
 
-        force_xp=floorf(force_xp*10+.5);
-        force_need=floorf(force_need*10+.5);
+        force_xp=floorf(force_xp*10+.5)/10;
+        force_need=floorf(force_need*10+.5)/10;
     }
 
     void reset_health(){
