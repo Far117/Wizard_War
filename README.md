@@ -1,6 +1,6 @@
 Wizard War!
 ==========
-Updated 7/4/14 (Beta 0.5 Patch #1)
+Updated 7/6/14 (Beta 0.6 Patch #1)
 ===================================
 
 A text-based RPG to perfect random elements for WW2, the full graphical version.
@@ -37,6 +37,8 @@ Skill-based leveling (whole character leveling as a result of ~3 skill levels)
 Swordsmanship
 
 Weapons
+
+Multiplayer!
 
 etc.
 
