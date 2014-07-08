@@ -228,6 +228,7 @@ void stats(){
     cout << "Earth Skill: " << player.earth_level << endl;
     cout << "Air Level: " << player.air_level << endl;
     cout << "Force Level: " << player.force_level << endl;
+    cout << "Swordsmanship Level: " << player.sword_level << endl;
     cout << "Unarmed Level: " << player.unarmed_level << endl << endl;
 
     enter();
@@ -419,6 +420,7 @@ void sheriff(){
     if (choice==1&&player.caught>0){
         float amount=player.caught*2;
         player.money+=amount;
+        player.caught=0;
 
         cout << "[Ray]: Here yer go!" << endl;
         cout << "Received " << amount << " Vi from Ray" << endl;

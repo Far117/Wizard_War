@@ -8,7 +8,14 @@
 #include <vector>
 #include <sstream>
 #include <cstdlib>
-#include <direct.h>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    const bool isWindows=true;
+    #include <direct.h>
+#else
+    const bool isWindows=false;
+#endif // defined
+
 
 using namespace std;
 
@@ -20,7 +27,12 @@ void enter();
 extern vector<Spell> spell_list;
 
 void make(string name){
+#if isWindows
     _mkdir(name.c_str());
+#else
+    string path="mkdir "+name;
+    system(path.c_str());
+#endif
 }
 
 bool exists(string name){

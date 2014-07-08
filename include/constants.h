@@ -13,9 +13,9 @@
 float random_float(float,float);
 
 struct Inf{
-    float version=0.6;
+    float version=0.7;
     std::string type="Beta";
-    int patch=1;
+    int patch=0;
 };
 
 
