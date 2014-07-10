@@ -1,6 +1,6 @@
 Wizard War!
 ==========
-Updated 7/8/14 (Beta 0.7)
+Updated 7/10/14 (Beta 0.7 Patch #1)
 ===================================
 
 A text-based RPG to perfect random elements for WW2, the full graphical version.
