@@ -269,8 +269,8 @@ void apothecary(){
     cout << endl;
     cout << "[Lyla]: I have lots of high quality potions for sale. Would you like:" << endl;
     cout << "Small health potion: Heals 20 hp for 1 Vi? (1)" << endl;
-    cout << "Medium health potion: Heals 75 hp for 3 Vi? (2)" << endl;
-    cout << "Large health potion? Heals 150 hp for 10 Vi? (3)" << endl;
+    cout << "Medium health potion: Heals 80 hp for 3 Vi? (2)" << endl;
+    cout << "Large health potion? Heals 150 hp for 5 Vi? (3)" << endl;
     cout << "Small upper health potion? Increases max health by 5 for 10 Vi? (4)" << endl;
     cout << "Medium upper health potion? Increases max health by 20 for 15 Vi? (5)" << endl;
     cout << "Large upper health potion? Increases max health by 50 for 30 Vi? (6)" << endl;
@@ -285,9 +285,9 @@ void apothecary(){
         player.health+=20;
     }else if (choice==2&&player.money>=3){
         player.money-=3;
-        player.health+=75;
-    }else if (choice==3&&player.money>=10){
-        player.money-=10;
+        player.health+=80;
+    }else if (choice==3&&player.money>=5){
+        player.money-=5;
         player.health+=150;
     }else if (choice==4&&player.money>=10){
         player.money-=10;
@@ -639,7 +639,7 @@ void outside(bool tokenfight){
                 cout << endl;
                 //cout << endl;
 
-                player.gain(player.spell_list[selected].type);
+                player.gain(player.spell_list[selected].type,player.spell_list[selected].power_requirement);
                 player.total_attacks++;
 
                 m.health-=damage;
@@ -778,7 +778,7 @@ void hospital(){
 
     cout << "[Nurse]: Oh my. You seem to have died. Don't worry! We brought you back with SCIENCE!" << endl;
     cout << "[Nurse]: ... And a lot of tylenol..." << endl;
-    cout << "[Nurse]: Anyway, to heal you 100% will cost " << player.money/10+2 << endl;
+    cout << "[Nurse]: Anyway, to heal you 100% will cost " << player.money/10+2 << " Vi" << endl;
     if (player.money>=player.money/10+2){
         cout << "[Nurse]: Would you like to pay for that? " << endl;
         if (lower(inputS(": "))=="yes"){
@@ -796,7 +796,7 @@ void hospital(){
         cout << "[Nurse]: Oh. Dang, I really wanted that cash." << endl;
         cout << "[Nurse]: We can charge you in demonic-... I mean other ways though." << endl;
         if (lower(inputS("Interested? \n: "))=="yes"){
-            player.x*=1.1;
+            player.levels--;
             player.reset_health();
         } else {
             player.health=player.max_health/2;

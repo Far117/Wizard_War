@@ -15,7 +15,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.7;
     std::string type="Beta";
-    int patch=0;
+    int patch=1;
 };
 
 
@@ -156,10 +156,19 @@ public:
 
         if(choice==1){
             max_health*=1.5;
+
+            max_power*=1.1;
+            defence*=1.1;
         }else if(choice==2){
             max_power*=1.5;
+
+            max_health*=1.1;
+            defence*=1.1;
         }else if(choice==3){
             defence*=1.5;
+
+            max_health*=1.1;
+            max_power*=1.1;
         }
 
         pop*=1.5;
@@ -181,13 +190,16 @@ public:
     }
 
     void check_powers(){
+        bool leveled=false;
         if(fire_xp>=fire_need){
+            clear_screen();
             std::cout << "Your Fire Skills Increased!" << std::endl;
             enter();
 
             fire_level++;
-            fire_need*=1.5;
+            fire_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(earth_xp>=earth_need){
@@ -197,8 +209,9 @@ public:
             enter();
 
             earth_level++;
-            earth_need*=1.5;
+            earth_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(water_xp>=water_need){
@@ -207,8 +220,9 @@ public:
             enter();
 
             water_level++;
-            water_need*=1.5;
+            water_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(air_xp>=air_need){
@@ -217,8 +231,9 @@ public:
             enter();
 
             air_level++;
-            air_need*=1.5;
+            air_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(force_xp>=force_need){
@@ -227,8 +242,9 @@ public:
             enter();
 
             force_level++;
-            force_need*=1.5;
+            force_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(unarmed_xp>=unarmed_need){
@@ -237,8 +253,9 @@ public:
             enter();
 
             unarmed_level++;
-            unarmed_need*=1.5;
+            unarmed_need*=2.1;
             levels++;
+            leveled=true;
         }
 
         if(sword_xp>=sword_need){
@@ -247,8 +264,13 @@ public:
             enter();
 
             sword_level++;
-            sword_need*=1.5;
+            sword_need*=2.1;
             levels++;
+            leveled=true;
+        }
+
+        if(leveled){
+            check_powers();
         }
 
         if(levels>=3){
@@ -256,48 +278,48 @@ public:
         }
     }
 
-    void gain(int type){ //1=fire, 2=water, 3=earth, 4=air, 5=force, 100=physical, 101=blade
+    void gain(int type, int add){ //1=fire, 2=water, 3=earth, 4=air, 5=force, 100=physical, 101=blade
         if (type==1){
             if(lower(element)=="fire"){
-                fire_xp+=1+random_float(0,2)*1.2;
+                fire_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                fire_xp+=1+random_float(0,2);
+                fire_xp+=1+random_float(0,2)+add;
             }
         }else if(type==2){
             if(lower(element)=="water"){
-                water_xp+=1+random_float(0,2)*1.2;
+                water_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                water_xp+=1+random_float(0,2);
+                water_xp+=1+random_float(0,2)+add;
             }
         }else if(type==3){
             if(lower(element)=="earth"){
-                earth_xp+=1+random_float(0,2)*1.2;
+                earth_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                earth_xp+=1+random_float(0,2);
+                earth_xp+=1+random_float(0,2)+add;
             }
         }else if(type==4){
             if(lower(element)=="air"){
-                air_xp+=1+random_float(0,2)*1.2;
+                air_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                air_xp+=1+random_float(0,2);
+                air_xp+=1+random_float(0,2)+add;
             }
         }else if(type==5){
             if(lower(element)=="force"){
-                force_xp+=1+random_float(0,2);
+                force_xp+=1+random_float(0,2)+add;
             }else{
-                force_xp+=1+random_float(0,2);
+                force_xp+=1+random_float(0,2)+add;
             }
         }else if(type==100){
             if(lower(element)=="unarmed"){
-                unarmed_xp+=1+random_float(0,2)*1.2;
+                unarmed_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                unarmed_xp+=1+random_float(0,2);
+                unarmed_xp+=1+random_float(0,2)+add;
             }
         }else if(type==101){
             if(lower(element)=="sword" || lower(element)=="sword combat" || lower(element)=="swords"){
-                sword_xp+=1+random_float(0,2)*1.2;
+                sword_xp+=1+random_float(0,2)*1.2+add;
             }else{
-                sword_xp+=1+random_float(0,2);
+                sword_xp+=1+random_float(0,2)+add;
             }
         }
 
@@ -335,7 +357,7 @@ public:
     std::string name;
 
     std::vector<std::string> titles{"Evil","Bad","Weak","Powerful","Crazy","Rabid",
-        "Glowing","King","Slimy","Ugly","Soft","Big","Small"};
+        "Glowing","King","Slimy","Ugly","Soft","Big","Small","Golden","Rare","Diamond"};
 
     std::vector<std::string> first_half{"Cre","Fra","She","Mera","Jure","Lepa","Zeta","Hira",
         "Giga","Frata","Mita","Chraka","Kli","Orodoro","Oro","Bonadu"};
@@ -347,7 +369,19 @@ public:
 
     void set_money(){
         money=health/100+defence+(power/10)/(random_float(1,5));
-        //if (xp<1){xp=1;}
+        if (money<1){money=1;}
+
+        if (contains("Golden",name)){
+            money*=2;
+        }
+
+        if (contains("Diamond",name)){
+            money*=4;
+        }
+
+        if (contains("Rare",name)){
+            money*=1.5;
+        }
     }
 
     void set_name(){
