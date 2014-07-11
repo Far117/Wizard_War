@@ -60,6 +60,9 @@ Spell sword;
 Spell longsword;
 Spell lightsaber;
 Spell soulsword;
+//================ Alteration
+Spell kaioken;
+Spell frenzy;
 //================ End
 
 //std::vector<Spell> spell_list;
@@ -108,6 +111,7 @@ Hero init_spells(Hero p){
     spiritbomb.power_requirement=1000;
     spiritbomb.type=1;
     spiritbomb.cost=3500;
+    spiritbomb.ultimate=true;
     //=============================================================================== Water
     slap.name="Slap";
     slap.description="Slap your opponent with a small burst of water!";
@@ -144,6 +148,7 @@ Hero init_spells(Hero p){
     zero.power_requirement=500;
     zero.type=2;
     zero.cost=1500;
+    zero.ultimate=true;
     //============================================================================== Earth
     pebble_rain.name="Pebble Rain";
     pebble_rain.description="Send the pebbles at your feet flying into the air, and have them ran down on your opponent!";
@@ -222,6 +227,7 @@ Hero init_spells(Hero p){
     voids.power_requirement=1000;
     voids.type=4;
     voids.cost=10000;
+    voids.ultimate=true;
     //================================================================================= Force
     push.name="Push";
     push.description="Send your enemies stumbling backwards, hopefully into a wall or over a cliff!";
@@ -258,6 +264,7 @@ Hero init_spells(Hero p){
     atomic.power_requirement=5000;
     atomic.type=5;
     atomic.cost=55000;
+    atomic.ultimate=true;
 
 
 
@@ -345,6 +352,7 @@ Hero init_spells(Hero p){
     chucknorris.power_requirement=100000;
     chucknorris.cost=10000000;
     chucknorris.type=100;
+    chucknorris.ultimate=true;
 
 
     p.spell_list.push_back(punch);
@@ -392,6 +400,7 @@ Hero init_spells(Hero p){
     soulsword.power_requirement=5000;
     soulsword.type=101;
     soulsword.cost=60000;
+    soulsword.ultimate=true;
 
     p.spell_list.push_back(woodsword);
     p.spell_list.push_back(dagger);

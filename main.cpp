@@ -10,12 +10,6 @@
 #include "Story.h"
 #include "token.h"
 
-/*
-Working on making physical attacks use 0 power;
-Continue updateing fight system
-XP and leveling
-*/
-
 using namespace std;
 
 Inf info;
@@ -135,7 +129,6 @@ void town(){
     cout << "Visit the Gym (8)";
     if (story.first_power==false){
         cout << " Hint: You need to buy your first move, punch, here!!!" << endl;
-        story.first_power=true;
     }else{
         cout << endl;
     }
@@ -838,7 +831,11 @@ void school(){
     for(int j=0;j<player.spell_list.size();j++){
         if(player.spell_list[j].type==choice && !player.spell_list[j].unlocked && player.spell_list[j].power_requirement
            <=player.max_power){
-            cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            if(player.spell_list[j].ultimate){
+                cout << "***" << player.spell_list[j].name << "*** :\n" << player.spell_list[j].description << "\n\n";
+            }else{
+                cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            }
             cout << "Power Per Use: " << player.spell_list[j].power_requirement << endl;
             cout << "Damage With 100 Power at Level 10: "<<player.spell_list[j].power_requirement+100*1.9 << endl;
             cout << "Price: " << player.spell_list[j].cost << " Vi\n\n";
@@ -908,7 +905,11 @@ void gym(){
     for(int j=0;j<player.spell_list.size();j++){
         if(player.spell_list[j].type==100 && !player.spell_list[j].unlocked && player.spell_list[j].power_requirement
            <=player.max_power){
-            cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            if(player.spell_list[j].ultimate){
+                cout << "***" << player.spell_list[j].name << "*** :\n" << player.spell_list[j].description << "\n\n";
+            }else{
+                cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            }
             cout << "Power Per Use: " << player.spell_list[j].power_requirement << endl;
             cout << "Damage With 100 Power at level 10: "<<player.spell_list[j].power_requirement+100*1.9 << endl;
             cout << "Price: " << player.spell_list[j].cost << " Vi\n\n";
@@ -935,6 +936,9 @@ void gym(){
 
                 clear_screen();
                 cout << "You've learned " << player.spell_list[j].name << "!" << endl;
+
+                if(!story.first_power){story.first_power=true;}
+
                 enter();
                 gym();
             } else if(lower(s)=="yes" && player.money < player.spell_list[j].cost){
@@ -971,7 +975,11 @@ void master(){
     for(int j=0;j<player.spell_list.size();j++){
         if(player.spell_list[j].type==101 && !player.spell_list[j].unlocked && player.spell_list[j].power_requirement
            <=player.max_power){
-            cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            if(player.spell_list[j].ultimate){
+                cout << "***" << player.spell_list[j].name << "*** :\n" << player.spell_list[j].description << "\n\n";
+            }else{
+                cout << player.spell_list[j].name << ":\n" << player.spell_list[j].description << "\n\n";
+            }
             cout << "Power Per Use: " << player.spell_list[j].power_requirement << endl;
             cout << "Damage With 100 Power at level 10: "<<player.spell_list[j].power_requirement+100*1.9 << endl;
             cout << "Price: " << player.spell_list[j].cost << " Vi\n\n";
@@ -990,7 +998,7 @@ void master(){
     for(int j=0;j<player.spell_list.size();j++){
         if(lower(player.spell_list[j].name)==lower(s)){
             clear_screen();
-            cout << "[Master]: Are you realler interested in " << player.spell_list[j].name << "?" << endl;
+            cout << "[Master]: Are you really interested in " << player.spell_list[j].name << "?" << endl;
             s=inputS(": ");
             if(lower(s)=="yes" && player.money >= player.spell_list[j].cost){
                 player.spell_list[j].unlocked=true;

@@ -15,7 +15,7 @@ float random_float(float,float);
 struct Inf{
     float version=0.7;
     std::string type="Beta";
-    int patch=1;
+    int patch=2;
 };
 
 
@@ -147,7 +147,7 @@ public:
     void level_up(){
 
         clear_screen();
-        levels-=3;
+        levels-=5;
         level++;
         std::cout << "With deep practice and discipline, you have leveled up!" << std::endl;
         enter();
@@ -197,7 +197,7 @@ public:
             enter();
 
             fire_level++;
-            fire_need*=2.1;
+            fire_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -209,7 +209,7 @@ public:
             enter();
 
             earth_level++;
-            earth_need*=2.1;
+            earth_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -220,7 +220,7 @@ public:
             enter();
 
             water_level++;
-            water_need*=2.1;
+            water_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -231,7 +231,7 @@ public:
             enter();
 
             air_level++;
-            air_need*=2.1;
+            air_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -242,7 +242,7 @@ public:
             enter();
 
             force_level++;
-            force_need*=2.1;
+            force_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -253,7 +253,7 @@ public:
             enter();
 
             unarmed_level++;
-            unarmed_need*=2.1;
+            unarmed_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -264,7 +264,7 @@ public:
             enter();
 
             sword_level++;
-            sword_need*=2.1;
+            sword_need*=1.2;
             levels++;
             leveled=true;
         }
@@ -273,7 +273,7 @@ public:
             check_powers();
         }
 
-        if(levels>=3){
+        if(levels>=5){
             level_up();
         }
     }
