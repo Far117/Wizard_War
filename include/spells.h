@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <string>
 
+//#include <constants.h>
+class monster;
 
 
 
@@ -16,11 +18,13 @@ struct Spell{
     int cost;
     bool unlocked;
     bool ultimate=false;
+    int intelligence;
     //float damage; // for physical attacks
 };
 
 #include "constants.h"
 
 Hero init_spells(Hero);
+monster init_evil_spell(monster);
 
 #endif // SPELLS_H

@@ -415,4 +415,38 @@ Hero init_spells(Hero p){
     return p;
 }
 
+monster init_evil_spell(monster mon){
 
+    //Basic
+    Spell scratch;
+    scratch.name="Scratch";
+    scratch.power_requirement=0;
+    scratch.intelligence=0;
+
+    Spell bite;
+    bite.name="Bite";
+    bite.power_requirement=1;
+    bite.intelligence=0;
+
+    //Smart
+    Spell counter;
+    counter.name="Counter-Attack";
+    counter.power_requirement=15;
+    counter.intelligence=1;
+
+    Spell poison;
+    poison.name="Poison";
+    poison.power_requirement=20;
+    poison.intelligence=1;
+
+    switch (mon.intelligence){
+    case 1:
+        mon.attacks.push_back(counter);
+        mon.attacks.push_back(poison); //on-purpose no break; high intelligence should know low-intelligence moves too
+    case 0:
+        mon.attacks.push_back(bite);
+        mon.attacks.push_back(scratch);
+    }
+
+    return mon;
+}

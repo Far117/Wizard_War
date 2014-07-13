@@ -13,9 +13,9 @@
 float random_float(float,float);
 
 struct Inf{
-    float version=0.7;
+    float version=0.8;
     std::string type="Beta";
-    int patch=2;
+    int patch=0;
 };
 
 
@@ -353,6 +353,7 @@ public:
     float power;
     float money;
     float defence;
+    int intelligence;
 
     std::string name;
 
@@ -364,6 +365,8 @@ public:
 
     std::vector<std::string> second_half{"man","mon","jarto","kilki","gario","ploj","qwad","grat",
         "noto","maru","cha","mira","schep","cretaka","plop"};
+
+    std::vector<Spell> attacks;
 
 
 
@@ -440,6 +443,26 @@ public:
         defence/=1.5;
     }
 
+    }
+
+    void set_intelligence(std::string type){
+        if (contains ("King",name)){
+
+            intelligence=1;
+
+         }else if (contains("Crazy",name) || contains("Rabid",name)){
+
+            intelligence=0;
+
+        } else if(lower(type)=="random"){
+
+            if(rand()%2==0){
+                intelligence=0;
+            }else{
+                intelligence=1;
+            }
+
+        }
     }
 };
 

@@ -433,12 +433,12 @@ void sheriff(){
 void outside(bool tokenfight){
     clear_screen();
     monster m;
-    //int choice;
     string choice;
     float damage;
     bool critical=false;
+    bool mon_critical=false;
     bool auto_fight=false;
-    //bool trip=true;
+    int mon_choice;
 
     int selected;
     bool found=false;
@@ -520,6 +520,9 @@ void outside(bool tokenfight){
         } else {
             m.set_name();
             m.set_status();
+
+            m.set_intelligence("random");
+            m=init_evil_spell(m);
         }
 
         m.set_money();
@@ -527,14 +530,6 @@ void outside(bool tokenfight){
 
     m.money+=random_float(m.money-(m.money*2/5),m.money*2/5);
     m.clean();
-
-    /*
-    vector<string> powers;
-    if (lower(player.element)=="fire"){powers=player.fire;}
-    if (lower(player.element)=="water"){powers=player.water;}
-    if (lower(player.element)=="earth"){powers=player.earth;}
-    if (lower(player.element)=="air"){powers=player.air;}
-    */
 
     clear_screen();
     if(!tokenfight){
@@ -552,16 +547,11 @@ void outside(bool tokenfight){
         cout << endl;
         if(!tokenfight){
             cout << "The " << m.name << " has " << m.health << " health" << endl << endl;
+            cout << "The " << m.name << " has " << m.power << " power" << endl << endl;
         }else{
             cout << m.name << " has " << m.health << " health" << endl << endl;
         }
         cout << "How do you want to attack?" << endl;
-
-        /*
-        for(int j=0;j<powers.size();j++){
-            cout << "Use " << powers[j] << "? (" << j << ")" << endl;
-        }
-        */
 
         for(int j=0;j<player.spell_list.size();j++){
             if(player.spell_list[j].unlocked){
@@ -571,17 +561,6 @@ void outside(bool tokenfight){
 
         cout << "Or try to escape?"<< endl;
 
-        //cout << endl << "Hint: Enter 9001 to enter auto punch mode..." << endl;
-
-
-        /*
-        if (!auto_fight){
-            choice=inputI(": ");
-            if (choice==9001){auto_fight=1;}
-        }else{
-            choice=powers.size();
-        }
-        */
         choice=inputS(": ");
 
         for(int j=0;j<player.spell_list.size();j++){
@@ -630,7 +609,7 @@ void outside(bool tokenfight){
                 cout << "You caused " << damage << " damage!" << endl;
                 enter();
                 cout << endl;
-                //cout << endl;
+
 
                 player.gain(player.spell_list[selected].type,player.spell_list[selected].power_requirement);
                 player.total_attacks++;
@@ -645,84 +624,43 @@ void outside(bool tokenfight){
             cout << "You tripped!" << endl;
         }
 
-
-
-        /*
-        if(choice>powers.size()+1||choice<0){
-            cout << "You tripped!" << endl;
-        }else if (choice==powers.size()){
-            player.total_attacks++;
-            damage=player.power-m.defence;
-
-            if (damage<1){damage=1;}
-
-            if (rand()%10==0){//critical
-                    damage*=rand()%3+2;
-                    critical=true;
-            }
-
-            cout << "You punched the " << m.name << ", HARD." << endl;
-            if (critical){cout << "Critical hit!" << endl; critical=false;}
-            cout << "You caused " << damage << " damage!" << endl;
-
-            m.health-=damage;
-
-            if(m.health<0){
-                enter();
+        while(true){
+            mon_choice=rand()%m.attacks.size();
+            if (m.attacks[mon_choice].power_requirement<=m.power){
                 break;
             }
-        } else if (choice==powers.size()+1) {
-            if (rand()%(10-(10/(int)(m.power+.5))+2)==0){
-                clear_screen();
-                cout << "Escape successful!" << endl;
-                player.reset_power();
-                enter();
-                town();
-            } else{
-                cout << "Couldn't escape!!!" << endl << endl;
-            }
-        } else{
-            if (player.costs[choice]>player.max_power){
-                cout << "You aren't skilled enough to use that!" << endl;
-            }else if (player.costs[choice]>player.power){
-                cout << "You're to tired to use that!" << endl;
-            }else {
-                player.total_attacks++;
-                cout << "You used " << powers[choice] << "!" << endl;
-                damage=player.costs[choice]+player.power-m.defence;
-
-                if (damage<1){damage=1;}
-
-                if (rand()%10==0){//critical
-                    damage*=rand()%3+2;
-                    critical=true;
-                }
-
-
-
-                if (critical){cout << "Critical hit!" << endl; critical=false;}
-                cout << "You caused " << damage << " damage!" << endl;
-
-                m.health-=damage;
-                player.power-=player.costs[choice];
-
-                if(m.health<0){enter(); break;}
-            }
-
         }
 
-        if (!auto_fight){enter();}
-        */
+        /*
         damage=m.power-player.defence;
         damage=floorf(damage*10+.5)/10;
         if (damage<1){damage=1;}
         m.power/=1.1;
+        */
+
+        damage=m.attacks[mon_choice].power_requirement+m.power-player.defence;
+        damage=floorf(damage*10+.5)/10;
+
+        m.power-=m.attacks[mon_choice].power_requirement;
+
+        if(damage<1){damage=1;}
+
+        if(rand()%10==0){
+            mon_critical=true;
+            damage*=rand()%3+2;
+        }
 
         cout << endl;
+
+        if(mon_critical){
+            cout << "Critical Hit!!!" << endl;
+            mon_critical=false;
+        }
+
         if(!tokenfight){
-            cout << "The " << m.name << " attacked you for " << damage << " damage!" << endl;
+            cout << "The " << m.name << " used " << m.attacks[mon_choice].name << " for " << damage << " damage!" << endl;
         }else{
-            cout << m.name << " attacked you for " << damage << " damage!" << endl;
+            cout << m.name << " used " << m.attacks[mon_choice].name << " for " << damage << " damage!" << endl;
         }
         if (!auto_fight){enter();}
 
@@ -751,14 +689,8 @@ void outside(bool tokenfight){
 
         player.caught++;
         player.killed++;
-        //player.total_xp+=m.xp;
         player.total_money+=m.money;
 
-        /*
-        if (player.check_xp()){
-            cout << "You have enough XP to level up!" << endl;
-        }
-        */
         enter();
         town();
     }
