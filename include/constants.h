@@ -372,6 +372,11 @@ public:
 
     void set_money(){
         money=health/100+defence+(power/10)/(random_float(1,5));
+
+        if(intelligence<1000){
+            money+=intelligence;
+        }
+
         if (money<1){money=1;}
 
         if (contains("Golden",name)){
@@ -385,6 +390,7 @@ public:
         if (contains("Rare",name)){
             money*=1.5;
         }
+
     }
 
     void set_name(){
@@ -446,9 +452,13 @@ public:
     }
 
     void set_intelligence(std::string type){
-        if (contains ("King",name)){
+        if (contains("Dark Wizard", name)){
+            intelligence=1000;
+        }else if (lower(type)=="player"){
+            intelligence=1001;
+        }else if (contains ("King",name)){
 
-            intelligence=1;
+            intelligence=2;
 
          }else if (contains("Crazy",name) || contains("Rabid",name)){
 
@@ -458,8 +468,10 @@ public:
 
             if(rand()%2==0){
                 intelligence=0;
-            }else{
+            }else if (rand()%2==0){
                 intelligence=1;
+            }else{
+                intelligence=2;
             }
 
         }

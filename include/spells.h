@@ -7,7 +7,7 @@
 
 //#include <constants.h>
 class monster;
-
+class Hero;
 
 
 struct Spell{
@@ -25,6 +25,6 @@ struct Spell{
 #include "constants.h"
 
 Hero init_spells(Hero);
-monster init_evil_spell(monster);
+monster init_evil_spell(monster, Hero);
 
 #endif // SPELLS_H

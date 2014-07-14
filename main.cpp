@@ -451,7 +451,7 @@ void outside(bool tokenfight){
         m.defence=random_float(player.defence*0.5,player.defence*1.8);
 
 
-        if(rand()%6==0){
+        if(rand()%10==0){
             m.name=player.name;
             m.power=player.max_power;
             m.health=player.max_health;
@@ -521,10 +521,15 @@ void outside(bool tokenfight){
             m.set_name();
             m.set_status();
 
-            m.set_intelligence("random");
-            m=init_evil_spell(m);
         }
 
+        if (m.name==player.name){
+            m.set_intelligence("player");
+        }else{
+            m.set_intelligence("random");
+        }
+
+        m=init_evil_spell(m,player);
         m.set_money();
     }
 
@@ -625,10 +630,19 @@ void outside(bool tokenfight){
         }
 
         while(true){
+            cout << m.attacks.size() << endl;
             mon_choice=rand()%m.attacks.size();
-            if (m.attacks[mon_choice].power_requirement<=m.power){
+
+            if (m.attacks[mon_choice].power_requirement>0){ //higher chance to use something that requires no power than
+                if (rand() % 3 == 0){                       //a power move. Gotta conserve energy!
+                    if (m.attacks[mon_choice].power_requirement<=m.power){
+                        break;
+                    }
+                }
+            } else if (m.attacks[mon_choice].power_requirement==0) {
                 break;
             }
+
         }
 
         /*

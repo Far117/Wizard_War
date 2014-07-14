@@ -415,7 +415,7 @@ Hero init_spells(Hero p){
     return p;
 }
 
-monster init_evil_spell(monster mon){
+monster init_evil_spell(monster mon, Hero player){
 
     //Basic
     Spell scratch;
@@ -439,7 +439,89 @@ monster init_evil_spell(monster mon){
     poison.power_requirement=20;
     poison.intelligence=1;
 
+    Spell spike;
+    spike.name="Spikes";
+    spike.power_requirement=25;
+    spike.intelligence=1;
+
+    //Smarter
+    Spell gas;
+    gas.name="Gas";
+    gas.power_requirement=10;
+    gas.intelligence=2;
+
+    Spell firebreath;
+    firebreath.name="Firebreath";
+    firebreath.power_requirement=30;
+    firebreath.intelligence=2;
+
+    Spell icebreath;
+    icebreath.name="Icebreath";
+    icebreath.power_requirement=30;
+    icebreath.intelligence=2;
+
+    Spell grab;
+    grab.name="Grab";
+    grab.power_requirement=1;
+    grab.intelligence=2;
+
+    Spell toss;
+    toss.name="Throw";
+    toss.power_requirement=50;
+    toss.intelligence=2;
+
+    //Genius etc
+
+    //Dark Wizard
+    Spell starfury;
+    starfury.name="Starfury";
+    starfury.power_requirement=0;
+    starfury.intelligence=1000;
+
+    Spell belt;
+    belt.name="Asteroid Belt";
+    belt.power_requirement=0.1;
+    belt.intelligence=1000;
+
+    Spell galaxy;
+    galaxy.name="Galactic Crush";
+    galaxy.power_requirement=mon.power/5;
+    galaxy.intelligence=1000;
+
+    Spell supernova;
+    supernova.name="Supernova";
+    supernova.power_requirement=mon.power/3;
+    supernova.intelligence=1000;
+
+    Spell hole;
+    hole.name="Black Hole";
+    hole.power_requirement=mon.power/2;
+    hole.intelligence=1000;
+
+    //std::cout << mon.intelligence << std::endl;
+    //enter();
+
     switch (mon.intelligence){
+    case 1000: //fighting Dark Wizard
+        mon.attacks.push_back(starfury);
+        mon.attacks.push_back(belt);
+        mon.attacks.push_back(galaxy);
+        mon.attacks.push_back(supernova);
+        mon.attacks.push_back(hole);
+        break;
+    case 1001: //fighting yourself
+        for (int x=0; x<player.spell_list.size(); x++){
+            if (player.spell_list[x].unlocked){
+                mon.attacks.push_back(player.spell_list[x]);
+            }
+        }
+        break;
+    case 2:
+        mon.attacks.push_back(gas);
+        mon.attacks.push_back(firebreath);
+        mon.attacks.push_back(icebreath);
+        mon.attacks.push_back(grab);
+        mon.attacks.push_back(toss);
     case 1:
         mon.attacks.push_back(counter);
         mon.attacks.push_back(poison); //on-purpose no break; high intelligence should know low-intelligence moves too
