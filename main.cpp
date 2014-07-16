@@ -41,6 +41,7 @@ void hospital();
 void school();
 void gym();
 void master();
+void doctor();
 
 //================================================================= End ==========================
 
@@ -134,7 +135,8 @@ void town(){
     }
     cout << "See the Swords Master (9)" << endl;
     cout << "Create a Battle Token (10)" << endl;
-    cout << "Or Fight One (11)?" << endl;
+    cout << "Fight a Battle Token (BROKEN)" << endl;
+    cout << "Or visit the hospital? (12)" << endl;
 
     choice=inputI("["+player.name+"]: ");
 
@@ -162,6 +164,8 @@ void town(){
         save_token(player);
     }else if(choice==11){
         outside(true);
+    } else if (choice == 12){
+        doctor();
     }
 
     town();
@@ -269,7 +273,12 @@ void apothecary(){
     cout << "Large upper health potion? Increases max health by 50 for 30 Vi? (6)" << endl;
     cout << "Defence potion? Increases defence by 20% for 15 Vi? (7)" << endl;
     cout << "Or maybe a power potion? Increases your power by 20% for 15 Vi? (8)" << endl;
-    cout << "Or do you just want to get out of here? (9)" << endl;
+
+    cout << "\n=====================================================================\n" << endl;
+
+    cout << "We also have a very large health potion, heal 300 hp for 9 Vi? (9)" << endl;
+    cout << "And a huge health potion to heal 500 hp for 14 Vi? (10)" << endl;
+    cout << "Or you could just get out of here> (11)" << endl;
 
     int choice=inputI("["+player.name+"]: ");
 
@@ -298,9 +307,15 @@ void apothecary(){
         player.money-=15;
         player.max_power*=1.2;
         player.reset_power();
-    }else if (choice==9){
+    }else if (choice==11){
         player.check();
         town();
+    }else if (choice==9 && player.money>=9){
+        player.money-=9;
+        player.health+=300;
+    }else if (choice==10 && player.money>=14){
+        player.money-=14;
+        player.health+=500;
     }else{
         cout << "[Lyla] You don't have that kind of cash!";
         bought=false;
@@ -432,6 +447,17 @@ void sheriff(){
 
 void outside(bool tokenfight){
     clear_screen();
+
+    if (tokenfight){
+        cout << "Hello, " << player.name <<"." << endl;
+        scroll();
+        cout << "Unfortunatly, token fighting is broken. We hope to fix this in a coming release." << endl;
+        scroll();
+        cout << "I know this was distracting, but please to not try this until the broken message goes away..." << endl;
+        enter();
+        town();
+    }
+
     monster m;
     string choice;
     float damage;
@@ -506,7 +532,7 @@ void outside(bool tokenfight){
                 enter();
                 cout << "The Dark Wizard used Galactic Implosion" << endl;
                 enter();
-                cout << "It caused " << player.max_health*10007 << " damage!!!" << endl;
+                cout << "It caused " << player.max_health*1007 << " damage!!!" << endl;
                 enter();
                 cout << "You have been wiped from the face of the universe..." << endl;
                 enter();
@@ -552,7 +578,7 @@ void outside(bool tokenfight){
         cout << endl;
         if(!tokenfight){
             cout << "The " << m.name << " has " << m.health << " health" << endl << endl;
-            cout << "The " << m.name << " has " << m.power << " power" << endl << endl;
+            //cout << "The " << m.name << " has " << m.power << " power" << endl << endl;
         }else{
             cout << m.name << " has " << m.health << " health" << endl << endl;
         }
@@ -967,6 +993,76 @@ void master(){
         cout << "[Master]: What..." << endl;
         enter();
         master();
+}
+
+void doctor() {
+    clear_screen();
+    int choice;
+    float amount;
+    //string s;
+    float cost;
+
+    cout << "[Doctor]: Hello, patient. What can I do for you?" << endl;
+    cout << "[Doctor]: I am capable of fully healing you (1)" <<
+        "\nLetting you decide how much to heal (2)" <<
+        "\nOr showing you to the door (3)" << endl;
+
+    choice=inputI(": ");
+
+    if (choice==1 && player.health < player.max_health){
+        clear_screen();
+
+        cost=(player.max_health-player.health)/15;
+        cost=floorf(cost*10+.5)/10;
+
+        if(player.money >= cost){
+            cout << "[Doctor]: That will be " << cost << " Vi. Are you sure?" << endl;
+
+            if (lower(inputS(": "))=="yes"){
+                player.reset_health();
+                player.money-=cost;
+            }else {
+                doctor();
+            }
+        }
+
+    } else if (choice==2){
+        clear_screen();
+
+        cout << "[Doctor]: Exactly how much would you like me to heal?" << endl;
+        cout << "[Doctor]: You seems to have " << player.health << "/" << player.max_health << " health." << endl;
+        amount=inputF(": ");
+
+        if (amount > player.max_health-player.health){
+            amount=player.max_health-player.health;
+        }
+
+        cost=amount/10;
+
+        cost=floorf(cost*10+.5)/10;
+
+        if (cost>player.money){
+            cout << "[Doctor]: Your insurance won't cover that!!!" << endl;
+            enter();
+            doctor();
+        }
+
+        cout << "That will be " << cost << " Vi. Are you sure?" << endl;
+
+        if(lower(inputS(": "))=="yes"){
+            player.health+=amount;
+            player.money-=cost;
+
+            player.check();
+            player.clean();
+        } else {
+            doctor();
+        }
+    } else if (choice==3){
+        town();
+    } else {
+        doctor();
+    }
 }
 
 int main()

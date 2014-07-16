@@ -205,7 +205,7 @@ public:
         if(earth_xp>=earth_need){
             clear_screen();
             std::cout << "Your Earth Skills Increased!" << std::endl;
-            std::cout << earth_xp << "\n" << earth_need << "\n";
+            //std::cout << earth_xp << "\n" << earth_need << "\n";
             enter();
 
             earth_level++;

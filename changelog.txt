@@ -1,0 +1,25 @@
+=====================================================================================
+Beta 0.8:
+
+TL;DR:
+
+Added new health potions to apothecary
+Now enemies attack with their own move pool:
+    Bosses have unique attacks
+    Player vs. Himself: the clone uses the player's moves
+Added a visitable hospital
+
+-----------------
+
+Behind the Scenes:
+
+Fixed some bugs:
+    Earth level-up still had some debug info
+    Fighting had some minor debug info
+    Various algorithms tweaked
+
+Caused some bugs :(
+    Token fighting is now broken. Don't even try. It has been disabled until I work out the kinks...
+
+
+Rewrote pause function, now not a CPU burner! (At least for Linux)

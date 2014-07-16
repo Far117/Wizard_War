@@ -20,7 +20,9 @@ struct Spell{
     bool ultimate=false;
     int intelligence;
     //float damage; // for physical attacks
+
 };
+
 
 #include "constants.h"
 

@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <time.h>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -16,20 +18,24 @@ bool exists(string);
 #endif // defined
 
 
-void clear_screen()
-{
+void clear_screen() {
     if(isWindows){
         system("cls");
     }else{
-        system("clear");
+        //system("clear");
+        cout << "\033[2J\033[1;1H";
     }
 
     return;
 }
 
 void pause(unsigned int ms){
-    clock_t goal = ms + clock();
-    while (goal > clock());
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+
+    //clock_t goal = ms + clock();
+    //while (goal > clock());
+
 }
 
 void scroll(){
