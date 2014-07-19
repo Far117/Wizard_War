@@ -13,9 +13,10 @@
 float random_float(float,float);
 
 struct Inf{
-    float version=0.8;
+    float version=0.9;
     std::string type="Beta";
     int patch=0;
+    int build=19;
 };
 
 
@@ -41,6 +42,12 @@ public:
     int level;
     float deposit;
     int caught;
+
+    int hunger;
+    int food;
+
+    int thirst;
+    int water;
 
     int killed;
     int total_attacks;

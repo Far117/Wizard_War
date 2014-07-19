@@ -10,6 +10,7 @@
 using namespace std;
 
 bool exists(string);
+void check(bool);
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
     const bool isWindows=true;
@@ -108,6 +109,8 @@ bool contains(string s, string check){
 }
 
 Hero init(Hero p){
+
+    check(isWindows);
 
     p.name="";
     p.age=0;
