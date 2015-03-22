@@ -17,8 +17,11 @@ Hero player;
 
 void splash(){
     cout << "                                   Wizard War" << endl;
-    cout << "                                " << info.type << " " << info.version << " Patch #" << info.patch << endl;
-    cout << "                                 Press enter...." << endl;
+    cout << "                                " << info.type << " " << info.version;
+    if(info.patch>0){
+        cout << " Patch #" << info.patch;
+    }
+    cout << "\n                                 Press enter...." << endl;
     inputS("");
 }
 
@@ -50,7 +53,10 @@ void newCharacter(){
 
     player.name=inputS("What is your name: ");
     player.age=inputI("How old are you: ");
-    player.boygirl=lower(inputS("Are you a boy or a girl: "));
+
+    do{
+        player.boygirl=lower(inputS("Are you a boy or a girl: "));
+    } while(!(player.boygirl=="boy" || player.boygirl=="girl"));
 
     if(player.boygirl=="boy"){
         player.himher="him";
@@ -62,8 +68,15 @@ void newCharacter(){
         player.sondaughter="daughter";
     }
 
-    player.element=inputS("Is your preferred power Fire, Water, Earth, Air, Force, Unarmed, or Sword Combat: ");
-
+    do{
+        player.element=lower(inputS("Is your preferred power Fire, Water, Earth, Air, Force, Unarmed, or Sword Combat: "));
+    } while(!(player.element=="fire" ||
+              player.element=="water" ||
+              player.element=="earth" ||
+              player.element=="air" ||
+              player.element=="force" ||
+              player.element=="unarmed" ||
+              player.element=="sword combat"));
     if (player.name=="superskip"){
         town();
     }
@@ -453,7 +466,7 @@ void outside(bool tokenfight){
         scroll();
         cout << "Unfortunatly, token fighting is broken. We hope to fix this in a coming release." << endl;
         scroll();
-        cout << "I know this was distracting, but please to not try this until the broken message goes away..." << endl;
+        cout << "I know this was distracting, but please do not try this until the broken message goes away..." << endl;
         enter();
         town();
     }

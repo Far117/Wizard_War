@@ -15,8 +15,8 @@ float random_float(float,float);
 struct Inf{
     float version=0.9;
     std::string type="Beta";
-    int patch=0;
-    int build=19;
+    int patch=1;
+    int build=20;
 };
 
 
@@ -351,6 +351,10 @@ public:
         }else{
             std::cerr << "Unknown type!!!";
         }
+    }
+
+    void time_pass(){
+
     }
 };
 

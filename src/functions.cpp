@@ -32,10 +32,10 @@ void clear_screen() {
 
 void pause(unsigned int ms){
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 
-    //clock_t goal = ms + clock();
-    //while (goal > clock());
+    clock_t goal = ms + clock();
+    while (goal > clock());
 
 }
 

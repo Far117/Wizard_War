@@ -1,14 +1,11 @@
 Wizard War!
 ==========
-Updated 7/18/14 (Beta 0.9)
+Updated 3/22/15 (Beta 0.9 Patch #1)
 ===================================
 
 A text-based RPG to perfect random elements for WW2, the full graphical version.
 
 ================================================================================
-
-
-This is mostly private, but ain't nobody got cash for premium.
 
 Feel free to download/play/make suggestions/fix my bugs/etc. if you're bored enough.
 
